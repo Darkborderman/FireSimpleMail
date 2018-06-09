@@ -25,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.activity_task_list);
+                Intent myIntent = new Intent(MainActivity.this, TaskListActivity.class);
+                MainActivity.this.startActivity(myIntent);
             }
         });
 
