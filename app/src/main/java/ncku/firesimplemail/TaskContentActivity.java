@@ -17,6 +17,8 @@ public class TaskContentActivity extends AppCompatActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_content);
-
+        Intent intent = getIntent();
+        String taskTitle = intent.getStringExtra(TaskListActivity.INTENT_TASK_TITLE);
+        setTitle(taskTitle);
     }
 }
