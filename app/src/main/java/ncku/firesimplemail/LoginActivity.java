@@ -5,11 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     Button loginButton,registerButton,testButton;
     TextView accountTextbox,passwordTextbox;
@@ -25,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, TaskListActivity.class);
-                MainActivity.this.startActivity(myIntent);
+                Intent myIntent = new Intent(LoginActivity.this, FacilityListActivity.class);
+                LoginActivity.this.startActivity(myIntent);
             }
         });
 
@@ -35,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast = Toast.makeText(MainActivity.this,"Not available", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(LoginActivity.this,"Not available", Toast.LENGTH_LONG);
                 toast.show();
             }
         });
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 String password=passwordTextbox.getText().toString();
 
                 if(account!=null||password!=null){
-                    Toast toast = Toast.makeText(MainActivity.this,account+"\n"+password, Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(LoginActivity.this,account+"\n"+password, Toast.LENGTH_LONG);
                     toast.show();
                 }
             }
