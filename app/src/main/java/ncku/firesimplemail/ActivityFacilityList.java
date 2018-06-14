@@ -10,6 +10,7 @@ public class ActivityFacilityList extends AppCompatActivity{
 
     Button getMailButton,writeMailButton;
     Button getTaskButton,writeTaskButton;
+    Client client=new Client("localhost",1111);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +22,9 @@ public class ActivityFacilityList extends AppCompatActivity{
         getMailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MailHead[] mailHeads=client.getAllMail();
                 Intent myIntent = new Intent(ActivityFacilityList.this, ActivityMailList.class);
+                myIntent.putExtra("Class",mailHeads);
                 ActivityFacilityList.this.startActivity(myIntent);
             }
         });

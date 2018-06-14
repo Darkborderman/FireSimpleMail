@@ -20,6 +20,8 @@ public class ActivityMailList extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_mail_list);
 
+        MailHead[] mailHeads=(MailHead[]) getIntent().getSerializableExtra("Class");
+
         getMailButton=findViewById(R.id.button);
         getMailButton.setOnClickListener(new View.OnClickListener() {
             @Override

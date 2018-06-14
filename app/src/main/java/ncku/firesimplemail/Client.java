@@ -14,7 +14,10 @@ public class Client {
     }
 
     public MailHead[] getAllMail(){
+        Id id=new Id(10);
         MailHead[] mailHeads=new MailHead[10];
+        mailHeads[0]=new Mail(id,"from","to","title","body");
+        mailHeads[1]=new Mail(id,"from","to","title","body");
         return mailHeads;
     }
 
