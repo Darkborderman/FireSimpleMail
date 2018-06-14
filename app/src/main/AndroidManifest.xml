@@ -9,25 +9,48 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+
+        <activity android:name=".ActivityLogin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
-            android:label="@string/task_list_title"
-            android:name=".TaskListActivity">
+            android:label="Welcome!"
+            android:name=".ActivityFacilityList">
         </activity>
 
-        <activity android:name=".FacilityListActivity"/>
+        <activity
+            android:label="Mail List"
+            android:name=".ActivityMailList">
+        </activity>
 
         <activity
-            android:label="@string/app_name"
-            android:name=".TaskContentActivity"
-            android:parentActivityName=".TaskListActivity">
+            android:label="Mail View"
+            android:name=".ActivityMailView">
+        </activity>
+
+        <activity
+            android:label="Mail Write"
+            android:name=".ActivityMailWrite">
+        </activity>
+
+        <activity
+            android:label="Task List"
+            android:name=".ActivityTaskList">
+        </activity>
+
+        <activity
+            android:label="Task View"
+            android:name=".ActivityTaskView"
+            android:parentActivityName=".ActivityTaskList">
+        </activity>
+
+        <activity
+            android:label="Task Write"
+            android:name=".ActivityTaskWrite">
         </activity>
 
     </application>

@@ -11,13 +11,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class NewTaskDialog extends DialogFragment{
+public class DialogNewTask extends DialogFragment{
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Toast.makeText(getActivity(), "Debug: Dialog Started", Toast.LENGTH_SHORT).show();
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        final View view = inflater.inflate(R.layout.new_task_prompt, null);
+        final View view = inflater.inflate(R.layout.prompt_new_task, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
         builder.setTitle(R.string.new_task_name);
@@ -25,12 +25,12 @@ public class NewTaskDialog extends DialogFragment{
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 EditText editText = view.findViewById(R.id.editText);
-                listener.onDialogPositiveClick(NewTaskDialog.this, editText.getText().toString());
+                listener.onDialogPositiveClick(DialogNewTask.this, editText.getText().toString());
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                listener.onDialogNegativeClick(NewTaskDialog.this);
+                listener.onDialogNegativeClick(DialogNewTask.this);
             }
         });
 

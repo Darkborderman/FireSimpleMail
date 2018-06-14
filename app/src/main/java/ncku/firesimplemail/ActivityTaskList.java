@@ -14,7 +14,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class TaskListActivity  extends AppCompatActivity implements NewTaskDialog.Callback{
+public class ActivityTaskList extends AppCompatActivity implements DialogNewTask.Callback{
 
     Button taskButton;
     public ArrayList<String> tasks = new ArrayList<>();
@@ -23,9 +23,9 @@ public class TaskListActivity  extends AppCompatActivity implements NewTaskDialo
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_list);
+        setContentView(R.layout.layout_task_list);
 
-        debugLog("TaskListActivity - onCreated");
+        debugLog("ActivityTaskList - onCreated");
 
         tasks.add("Sample 1");
         tasks.add("Sample 2");
@@ -42,21 +42,21 @@ public class TaskListActivity  extends AppCompatActivity implements NewTaskDialo
     private AdapterView.OnItemClickListener newTaskClickedHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
             debugLog(parent.getItemAtPosition(position).toString());
-            Intent myIntent = new Intent(TaskListActivity.this, TaskContentActivity.class);
+            Intent myIntent = new Intent(ActivityTaskList.this, ActivityTaskView.class);
             myIntent.putExtra(INTENT_TASK_TITLE, parent.getItemAtPosition(position).toString());
             // Note that tasks will not be flushed after navigation
             // TODO: local storage
-            TaskListActivity.this.startActivity(myIntent);
+            ActivityTaskList.this.startActivity(myIntent);
         }
     };
 
     public void debugLog(String str) {
-        Toast.makeText(TaskListActivity.this, "Debug: " + str,
+        Toast.makeText(ActivityTaskList.this, "Debug: " + str,
                 Toast.LENGTH_SHORT).show();
     }
 
     public void namingNewTask(View view) {
-        NewTaskDialog dialog = new NewTaskDialog();
+        DialogNewTask dialog = new DialogNewTask();
         dialog.show(getFragmentManager(), "TBD");
     }
 

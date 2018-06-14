@@ -2,7 +2,7 @@ package ncku.firesimplemail;
 
 public class Client {
 
-    public Client(String serverIP,String port){
+    public Client(String serverIP,int port){
     }
 
     public boolean regist(String account,String password){
