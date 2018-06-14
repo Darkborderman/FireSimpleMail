@@ -1,6 +1,8 @@
 package ncku.firesimplemail;
 
-public class Task extends TaskHead{
+import java.io.Serializable;
+
+public class Task extends TaskHead implements Serializable {
 
     private Text[] text;
 

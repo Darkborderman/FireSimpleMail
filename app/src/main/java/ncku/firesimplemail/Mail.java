@@ -1,6 +1,8 @@
 package ncku.firesimplemail;
 
-public class Mail extends MailHead{
+import java.io.Serializable;
+
+public class Mail extends MailHead implements Serializable{
 
     private String body;
 

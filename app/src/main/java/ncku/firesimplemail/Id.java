@@ -1,10 +1,14 @@
 package ncku.firesimplemail;
 
-public class Id {
+import java.io.Serializable;
+
+public class Id implements Serializable {
 
     int id;
 
-    public Id(int id){ }
+    public Id(int id){
+        this.id=id;
+    }
     public String getId(){
         return "Hello";
     }

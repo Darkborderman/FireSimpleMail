@@ -1,6 +1,8 @@
 package ncku.firesimplemail;
 
-public class Text {
+import java.io.Serializable;
+
+public class Text implements Serializable {
 
     public String[] getAllText(){
         String[] text=new String[10];

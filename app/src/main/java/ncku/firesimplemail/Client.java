@@ -6,11 +6,11 @@ public class Client {
     }
 
     public boolean regist(String account,String password){
-        return false;
+        return true;
     }
 
     public boolean authenticate(String account,String password){
-        return false;
+        return true;
     }
 
     public MailHead[] getAllMail(){

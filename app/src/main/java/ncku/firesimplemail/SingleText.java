@@ -1,6 +1,8 @@
 package ncku.firesimplemail;
 
-public class SingleText {
+import java.io.Serializable;
+
+public class SingleText implements Serializable {
 
     private String text;
 

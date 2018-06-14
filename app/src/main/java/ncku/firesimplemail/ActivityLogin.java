@@ -34,15 +34,14 @@ public class ActivityLogin extends AppCompatActivity {
                 account=accountTextbox.getText().toString();
                 password=passwordTextbox.getText().toString();
 
-                //boolean result=client.authenticate(account,password);
-                boolean result=false;
+                boolean result=client.authenticate(account,password);
 
                 if(result==true){
                     Intent myIntent = new Intent(ActivityLogin.this, ActivityFacilityList.class);
                     ActivityLogin.this.startActivity(myIntent);
                 }
                 else{
-                    Toast toast = Toast.makeText(ActivityLogin.this,"Login failed, you noob", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(ActivityLogin.this,"Login failed.", Toast.LENGTH_LONG);
                     toast.show();
                 }
             }
@@ -57,15 +56,14 @@ public class ActivityLogin extends AppCompatActivity {
                 account=accountTextbox.getText().toString();
                 password=passwordTextbox.getText().toString();
 
-                //boolean result=client.regist(account,password);
-                boolean result=true;
+                boolean result=client.regist(account,password);
 
                 if(result==true){
                     Intent myIntent = new Intent(ActivityLogin.this, ActivityFacilityList.class);
                     ActivityLogin.this.startActivity(myIntent);
                 }
                 else{
-                    Toast toast = Toast.makeText(ActivityLogin.this,"Login failed, you noob", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(ActivityLogin.this,"Register failed.", Toast.LENGTH_LONG);
                     toast.show();
                 }
             }
