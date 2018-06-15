@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/titleLabel"
+        android:layout_width="348dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Title"
+        android:textSize="32sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/senderLabel"
+        android:layout_width="353dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Sender"
+        android:textSize="28sp"
+        app:layout_constraintStart_toStartOf="@+id/titleLabel"
+        app:layout_constraintTop_toBottomOf="@+id/titleLabel" />
+
+    <TextView
+        android:id="@+id/receiverLabel"
+        android:layout_width="353dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Receiver"
+        android:textSize="28sp"
+        app:layout_constraintStart_toStartOf="@+id/senderLabel"
+        app:layout_constraintTop_toBottomOf="@+id/senderLabel" />
+
+    <TextView
+        android:id="@+id/bodyLabel"
+        android:layout_width="353dp"
+        android:layout_height="311dp"
+        android:layout_marginTop="16dp"
+        android:text="body"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/receiverLabel"
+        app:layout_constraintTop_toBottomOf="@+id/receiverLabel" />
+</android.support.constraint.ConstraintLayout>

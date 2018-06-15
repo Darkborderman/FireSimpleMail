@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/getTaskButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="get task"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/writeTaskButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="write task"
+        app:layout_constraintStart_toStartOf="@+id/getTaskButton"
+        app:layout_constraintTop_toBottomOf="@+id/getTaskButton" />
+
+    <Button
+        android:id="@+id/getMailButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="get mail"
+        app:layout_constraintStart_toStartOf="@+id/writeTaskButton"
+        app:layout_constraintTop_toBottomOf="@+id/writeTaskButton" />
+
+    <Button
+        android:id="@+id/writeMailButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="write mail"
+        app:layout_constraintStart_toStartOf="@+id/getMailButton"
+        app:layout_constraintTop_toBottomOf="@+id/getMailButton" />
+</android.support.constraint.ConstraintLayout>
