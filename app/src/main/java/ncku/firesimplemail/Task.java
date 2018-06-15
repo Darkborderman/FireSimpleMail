@@ -10,4 +10,7 @@ public class Task extends Mail implements Serializable {
     {
         super(from,to,title);
     }
+
+    @Override
+    public String toString() {return getTitle();}
 }

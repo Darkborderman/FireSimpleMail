@@ -32,4 +32,9 @@ public class Mail implements Serializable{
     public String getBody(){
         return "Hello";
     }
+
+    @Override
+    public String toString() {
+        return getTitle();
+    }
 }

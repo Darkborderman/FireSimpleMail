@@ -16,7 +16,10 @@ import java.util.ArrayList;
 
 public class ActivityTaskList extends AppCompatActivity {
     
-    public ArrayList<String> tasks = new ArrayList<>();
+    //public ArrayList<String> tasks = new ArrayList<>();
+
+
+    private ArrayList<Task> tasks = new ArrayList<Task>();
 
     public static final String INTENT_TASK_TITLE = "ncku.firesimplemail.TASK_TITLE";
 
@@ -26,10 +29,12 @@ public class ActivityTaskList extends AppCompatActivity {
 
         debugLog("ActivityTaskList - onCreated");
 
-        tasks.add("Sample 1");
-        tasks.add("Sample 2");
+        Task task = new Task(new Id(1), "from", "to", "title");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<> (this,
+        tasks.add(task);
+        debugLog(task.toString());
+
+        ArrayAdapter<Task> adapter = new ArrayAdapter<> (this,
                 android.R.layout.simple_list_item_1, tasks);
         // ListView is a legacy, but newer RecyclerView does not support ArrayAdapter
         // Another solution: https://github.com/passsy/ArrayAdapter
