@@ -46,8 +46,10 @@ public class ActivityTaskList extends AppCompatActivity {
     private AdapterView.OnItemClickListener newTaskClickedHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
             debugLog(parent.getItemAtPosition(position).toString());
-            Intent myIntent = new Intent(ActivityTaskList.this, ActivityTaskView.class);
+            Intent myIntent = new Intent(ActivityTaskList.this, ActivityTaskWrite.class);
             myIntent.putExtra(INTENT_TASK_TITLE, parent.getItemAtPosition(position).toString());
+            myIntent.putExtra("Operation","update");
+
             // Note that tasks will not be flushed after navigation
             ActivityTaskList.this.startActivity(myIntent);
         }
