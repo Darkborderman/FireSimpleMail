@@ -18,20 +18,23 @@ public class ActivityTaskList extends AppCompatActivity {
     
     //public ArrayList<String> tasks = new ArrayList<>();
 
+    private Client client=new Client("localhost",1111);
 
-    private ArrayList<Task> tasks = new ArrayList<Task>();
+    private ArrayList<TaskHead> tasks = new ArrayList<TaskHead>();
 
-    //public static final String INTENT_TASK_TITLE = "ncku.firesimplemail.TASK_TITLE";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_task_list);
 
-        Task task = new Task( "from", "to", "title");
+        TaskHead[] th=client.getAllTask();
+        for(int i=0;i<=th.length-1;i++)
+        {
+            tasks.add(th[i]);
+        }
 
-        tasks.add(task);
 
-        ArrayAdapter<Task> adapter = new ArrayAdapter<> (this,
+        ArrayAdapter<TaskHead> adapter = new ArrayAdapter<> (this,
                 android.R.layout.simple_list_item_1, tasks);
         ListView listView = findViewById(R.id.listView);
         listView.setAdapter(adapter);
@@ -40,11 +43,12 @@ public class ActivityTaskList extends AppCompatActivity {
 
     private AdapterView.OnItemClickListener newTaskClickedHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
-            Intent myIntent = new Intent(ActivityTaskList.this, ActivityTaskWrite.class);
-            //myIntent.putExtra(INTENT_TASK_TITLE, parent.getItemAtPosition(position).toString());
-            myIntent.putExtra("Operation","update");
 
-            // Note that tasks will not be flushed after navigation
+            Intent myIntent = new Intent(ActivityTaskList.this, ActivityTaskWrite.class);
+            Task task=client.getTask("hi");
+            myIntent.putExtra("Class", task);
+
+            myIntent.putExtra("Operation","update");
             ActivityTaskList.this.startActivity(myIntent);
         }
     };

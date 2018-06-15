@@ -33,9 +33,9 @@ public class ActivityTaskWrite extends AppCompatActivity{
         from=fromTextBox.getText().toString();
         to=toTextBox.getText().toString();
 
-        Task task=new Task("this","to","here");
-
         if(operation.equals("update")){
+
+            Task task=(Task)getIntent().getSerializableExtra("Class");
             taskTitleTextBox.setEnabled(false);
             taskTitleTextBox.setText(task.getTitle());
             titleTextBox.setText(task.getTitle());
