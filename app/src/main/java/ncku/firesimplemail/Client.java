@@ -37,7 +37,12 @@ public class Client {
     }
 
     public TaskHead[] getAllTask(){
-        TaskHead[] taskHeads=new TaskHead[10];
+        TaskHead[] taskHeads=new TaskHead[5];
+        taskHeads[0]=new TaskHead("1","from","to","title");
+        taskHeads[1]=new TaskHead("2","from","to","title");
+        taskHeads[2]=new TaskHead("3","from","to","title");
+        taskHeads[3]=new TaskHead("4","from","to","title");
+        taskHeads[4]=new TaskHead("5","from","to","title");
         return taskHeads;
     }
 
