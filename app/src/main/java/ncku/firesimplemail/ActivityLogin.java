@@ -34,6 +34,7 @@ public class ActivityLogin extends AppCompatActivity {
                 account=accountTextbox.getText().toString();
                 password=passwordTextbox.getText().toString();
 
+
                 boolean result=client.authenticate(account,password);
 
                 if(result==true){
@@ -56,7 +57,7 @@ public class ActivityLogin extends AppCompatActivity {
                 account=accountTextbox.getText().toString();
                 password=passwordTextbox.getText().toString();
 
-                boolean result=client.regist(account,password);
+                boolean result=true;
 
                 if(result==true){
                     Intent myIntent = new Intent(ActivityLogin.this, ActivityFacilityList.class);
