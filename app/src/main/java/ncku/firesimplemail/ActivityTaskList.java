@@ -29,7 +29,7 @@ public class ActivityTaskList extends AppCompatActivity {
 
         debugLog("ActivityTaskList - onCreated");
 
-        Task task = new Task(new Id(1), "from", "to", "title");
+        Task task = new Task( "from", "to", "title");
 
         tasks.add(task);
         debugLog(task.toString());
