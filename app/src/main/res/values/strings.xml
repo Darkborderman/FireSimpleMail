@@ -1,6 +1,4 @@
 <resources>
     <string name="app_name">FireSimpleMail</string>
-    <string name="task_name_hint">Enter a task name</string>
-    <string name="new_task_name">New Task</string>
     <string name="task_list_title">Task List</string>
 </resources>

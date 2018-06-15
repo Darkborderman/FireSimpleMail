@@ -1,6 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <EditText
+        android:id="@+id/titleTextBox"
+        android:layout_width="343dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/fromTextBox"
+        android:layout_width="337dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="from"
+        app:layout_constraintStart_toStartOf="@+id/titleTextBox"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextBox" />
+
+    <EditText
+        android:id="@+id/toTextBox"
+        android:layout_width="333dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="to"
+        app:layout_constraintStart_toStartOf="@+id/fromTextBox"
+        app:layout_constraintTop_toBottomOf="@+id/fromTextBox" />
+
+    <EditText
+        android:id="@+id/contextTextBox"
+        android:layout_width="347dp"
+        android:layout_height="226dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        app:layout_constraintStart_toStartOf="@+id/toTextBox"
+        app:layout_constraintTop_toBottomOf="@+id/toTextBox" />
+
+    <Button
+        android:id="@+id/sendButton"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="36dp"
+        android:text="send"
+        app:layout_constraintStart_toStartOf="@+id/contextTextBox"
+        app:layout_constraintTop_toBottomOf="@+id/contextTextBox" />
 </android.support.constraint.ConstraintLayout>

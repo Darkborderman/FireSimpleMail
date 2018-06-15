@@ -14,9 +14,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class ActivityTaskList extends AppCompatActivity implements DialogNewTask.Callback{
-
-    Button taskButton;
+public class ActivityTaskList extends AppCompatActivity {
+    
     public ArrayList<String> tasks = new ArrayList<>();
 
     public static final String INTENT_TASK_TITLE = "ncku.firesimplemail.TASK_TITLE";
@@ -45,7 +44,6 @@ public class ActivityTaskList extends AppCompatActivity implements DialogNewTask
             Intent myIntent = new Intent(ActivityTaskList.this, ActivityTaskView.class);
             myIntent.putExtra(INTENT_TASK_TITLE, parent.getItemAtPosition(position).toString());
             // Note that tasks will not be flushed after navigation
-            // TODO: local storage
             ActivityTaskList.this.startActivity(myIntent);
         }
     };
@@ -53,21 +51,5 @@ public class ActivityTaskList extends AppCompatActivity implements DialogNewTask
     public void debugLog(String str) {
         Toast.makeText(ActivityTaskList.this, "Debug: " + str,
                 Toast.LENGTH_SHORT).show();
-    }
-
-    public void namingNewTask(View view) {
-        DialogNewTask dialog = new DialogNewTask();
-        dialog.show(getFragmentManager(), "TBD");
-    }
-
-    @Override
-    public void onDialogPositiveClick(DialogFragment dialog, String str) {
-        tasks.add(str);
-        debugLog("Dialog OK");
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-        debugLog("Dialog Cancel");
     }
 }

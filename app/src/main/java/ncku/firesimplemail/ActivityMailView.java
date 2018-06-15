@@ -20,11 +20,11 @@ public class ActivityMailView extends AppCompatActivity{
         titleLabel=findViewById(R.id.titleLabel);
         titleLabel.setText(title);
 
-        String sender=mail.getSender();
+        String sender=mail.getFrom();
         senderLabel=findViewById(R.id.senderLabel);
         senderLabel.setText(sender);
 
-        String receiver=mail.getReceiver();
+        String receiver=mail.getTo();
         receiverLabel=findViewById(R.id.receiverLabel);
         receiverLabel.setText(receiver);
 
