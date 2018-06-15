@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class ActivityMailList extends AppCompatActivity{
 
-    private ArrayList<Mail> mails = new ArrayList<Mail>();
+    private ArrayList<MailHead> mails = new ArrayList<MailHead>();
     Client client=new Client("localhost",1111);
 
     @Override
@@ -22,9 +22,13 @@ public class ActivityMailList extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_mail_list);
 
-        mails.add(client.getMail(new Id(10)));
+        MailHead[] mh=client.getAllMail();
+        for(int i=0;i<=mh.length-1;i++)
+        {
+            mails.add(mh[i]);
+        }
 
-        ArrayAdapter<Mail> adapter = new ArrayAdapter<> (this,
+        ArrayAdapter<MailHead> adapter = new ArrayAdapter<> (this,
             android.R.layout.simple_list_item_1, mails);
         ListView listView = findViewById(R.id.listView2);
         listView.setAdapter(adapter);
@@ -35,7 +39,8 @@ public class ActivityMailList extends AppCompatActivity{
     private AdapterView.OnItemClickListener newMailClickedHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
             Intent myIntent = new Intent(ActivityMailList.this, ActivityMailView.class);
-            Mail mail = (Mail)parent.getItemAtPosition(position);
+            MailHead selected = (MailHead)parent.getItemAtPosition(position);
+            Mail mail=client.getMail("hi");
             myIntent.putExtra("Class", mail);
             ActivityMailList.this.startActivity(myIntent);
         }

@@ -14,7 +14,7 @@ public class ActivityLogin extends AppCompatActivity {
     TextView accountTextbox,passwordTextbox;
     String account,password;
 
-    Client client=new Client("localhost",1111);
+    Client client=new Client("192.168.43.203",3000);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

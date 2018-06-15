@@ -4,16 +4,15 @@ import java.io.Serializable;
 
 public class Head implements Serializable {
 
-    private Id id;
-    private String from,to,title;
+    private String id, from,to,title;
 
-    public Head(Id id,String from,String to,String title){
+    public Head(String id,String from,String to,String title){
         this.id=id;
         this.from=from;
         this.to=to;
         this.title=title;
     }
-    public Id getId(){
+    public String getId(){
         return this.id;
     }
     public String getSender(){

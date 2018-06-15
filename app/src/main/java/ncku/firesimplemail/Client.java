@@ -3,6 +3,7 @@ package ncku.firesimplemail;
 public class Client {
 
     public Client(String serverIP,int port){
+
     }
 
     public boolean regist(String account,String password){
@@ -14,12 +15,19 @@ public class Client {
     }
 
     public MailHead[] getAllMail(){
-        Id id=new Id(10);
-        MailHead[] mailHeads=new MailHead[10];
+        MailHead[] mailHeads=new MailHead[5];
+        mailHeads[0]=new MailHead("1","from","to","title");
+        mailHeads[1]=new MailHead("2","from","to","title");
+        mailHeads[2]=new MailHead("3","from","to","title");
+        mailHeads[3]=new MailHead("4","from","to","title");
+        mailHeads[4]=new MailHead("5","from","to","title");
+
+
+
         return mailHeads;
     }
 
-    public Mail getMail(Id id){
+    public Mail getMail(String id){
         Mail mail=new Mail("from","to","title","body");
         return mail;
     }
@@ -33,7 +41,7 @@ public class Client {
         return taskHeads;
     }
 
-    public Task getTask(Id id){
+    public Task getTask(String id){
         Task task=new Task("from","to","title");
         return task;
     }
