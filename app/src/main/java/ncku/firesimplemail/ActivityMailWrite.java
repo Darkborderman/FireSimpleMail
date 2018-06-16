@@ -8,6 +8,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Date;
+
+import FSMServer.*;
+
+
 public class ActivityMailWrite extends AppCompatActivity{
 
     Button sendButton;
@@ -33,8 +38,9 @@ public class ActivityMailWrite extends AppCompatActivity{
                 to=toTextBox.getText().toString();
                 title=titleTextBox.getText().toString();
                 context=contextTextBox.getText().toString();
+                Date date=new Date(System.currentTimeMillis());
 
-                Mail mail=new Mail(from,to,title,context);
+                Mail mail=new Mail(from,to,title,date);
                 Client client=new Client("localhost",1111);
 
                 boolean result=client.sendMail(mail);

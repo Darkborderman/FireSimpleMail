@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
+import FSMServer.*;
+
 
 public class ActivityFacilityList extends AppCompatActivity{
 
     Button getMailButton,writeMailButton;
     Button getTaskButton,writeTaskButton;
-    Client client=new Client("localhost",1111);
+    Client client=new Client("localhost",3000);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

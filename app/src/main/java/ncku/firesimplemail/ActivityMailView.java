@@ -3,6 +3,8 @@ package ncku.firesimplemail;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+import FSMServer.*;
+
 
 public class ActivityMailView extends AppCompatActivity{
 
@@ -20,11 +22,11 @@ public class ActivityMailView extends AppCompatActivity{
         titleLabel=findViewById(R.id.titleLabel);
         titleLabel.setText(title);
 
-        String sender=mail.getFrom();
+        String sender=mail.getSender();
         senderLabel=findViewById(R.id.senderLabel);
         senderLabel.setText(sender);
 
-        String receiver=mail.getTo();
+        String receiver=mail.getReceiver();
         receiverLabel=findViewById(R.id.receiverLabel);
         receiverLabel.setText(receiver);
 

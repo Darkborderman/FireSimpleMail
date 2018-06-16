@@ -10,8 +10,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+import FSMServer.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class ActivityTaskList extends AppCompatActivity {
@@ -29,7 +31,11 @@ public class ActivityTaskList extends AppCompatActivity {
 
         debugLog("ActivityTaskList - onCreated");
 
-        Task task = new Task( "from", "to", "title");
+        Text[] text=new Text[1];
+        Date date=new Date();
+
+
+        Task task = new Task( "from", "to", "title",text,date,1000);
 
         tasks.add(task);
         debugLog(task.toString());
