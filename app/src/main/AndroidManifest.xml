@@ -43,6 +43,7 @@
         </activity>
 
         <activity
+            android:windowSoftInputMode="adjustPan"
             android:label="Task Write"
             android:name=".ActivityTaskWrite">
         </activity>
