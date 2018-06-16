@@ -24,7 +24,7 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
     String taskTitle,title,from,to;
     Button saveButton, addButton;
     LinearLayout linearLayout;
-    Client client=new Client("localhost",1111);
+    Client client=new Client("140.116.245.100",6000);
     private ArrayList<DropdownList> dropdownlists = new ArrayList<>();
 
     @Override

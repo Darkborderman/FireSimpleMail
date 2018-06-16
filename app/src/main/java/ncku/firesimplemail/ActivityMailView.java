@@ -10,6 +10,7 @@ public class ActivityMailView extends AppCompatActivity{
 
     Mail mail;
     TextView titleLabel,senderLabel,receiverLabel,bodyLabel;
+    Client client=new Client("140.116.245.100",6000);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -14,9 +14,11 @@ public class ActivityLogin extends AppCompatActivity {
 
     Button loginButton,registerButton,testButton;
     TextView accountTextbox,passwordTextbox;
+    String operation;
     String account,password;
+    boolean result;
 
-    Client client=new Client("192.168.43.203",3000);
+    Client client=new Client("140.116.245.100",6000);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +38,16 @@ public class ActivityLogin extends AppCompatActivity {
                 account=accountTextbox.getText().toString();
                 password=passwordTextbox.getText().toString();
 
+                operation="login";
+                Thread thread = new Thread(mutiThread);
+                thread.start();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-                boolean result=client.authenticate(account,password);
-
-                if(result==true){
+                if(result){
                     Intent myIntent = new Intent(ActivityLogin.this, ActivityFacilityList.class);
                     ActivityLogin.this.startActivity(myIntent);
                 }
@@ -59,9 +67,17 @@ public class ActivityLogin extends AppCompatActivity {
                 account=accountTextbox.getText().toString();
                 password=passwordTextbox.getText().toString();
 
-                boolean result=true;
+                operation="register";
+                Thread thread = new Thread(mutiThread);
+                thread.start();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-                if(result==true){
+                if(result){
+
                     Intent myIntent = new Intent(ActivityLogin.this, ActivityFacilityList.class);
                     ActivityLogin.this.startActivity(myIntent);
                 }
@@ -72,4 +88,12 @@ public class ActivityLogin extends AppCompatActivity {
             }
         });
     }
+
+    private Runnable mutiThread = new Runnable() {
+        public void run() {
+            if(operation.equals("login")) result=client.authenticate(account,password);
+            else if(operation.equals("register")) result=client.regist(account,password);
+
+        }
+    };
 }

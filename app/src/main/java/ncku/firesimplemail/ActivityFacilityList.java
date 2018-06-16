@@ -12,7 +12,7 @@ public class ActivityFacilityList extends AppCompatActivity{
 
     Button getMailButton,writeMailButton;
     Button getTaskButton,writeTaskButton;
-    Client client=new Client("localhost",3000);
+    Client client=new Client("140.116.245.100",6000);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -18,6 +18,7 @@ public class ActivityMailWrite extends AppCompatActivity{
     Button sendButton;
     TextView titleTextBox,fromTextBox,toTextBox,contextTextBox;
     String title,from,to,context;
+    Client client=new Client("140.116.245.100",6000);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

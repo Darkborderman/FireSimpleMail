@@ -16,7 +16,7 @@ import FSMServer.*;
 public class ActivityMailList extends AppCompatActivity{
 
     private ArrayList<MailHead> mails = new ArrayList<MailHead>();
-    Client client=new Client("localhost",1111);
+    Client client=new Client("140.116.245.100",6000);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

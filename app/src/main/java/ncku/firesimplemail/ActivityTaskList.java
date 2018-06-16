@@ -20,7 +20,7 @@ public class ActivityTaskList extends AppCompatActivity {
     
     //public ArrayList<String> tasks = new ArrayList<>();
 
-    private Client client=new Client("localhost",1111);
+    Client client=new Client("140.116.245.100",6000);
 
     private ArrayList<TaskHead> tasks = new ArrayList<TaskHead>();
 
