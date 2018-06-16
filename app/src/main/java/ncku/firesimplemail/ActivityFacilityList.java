@@ -57,6 +57,7 @@ public class ActivityFacilityList extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                  Intent myIntent = new Intent(ActivityFacilityList.this, ActivityTaskWrite.class);
+                 myIntent.putExtra("Operation","create");
                  ActivityFacilityList.this.startActivity(myIntent);
             }
         });

@@ -25,7 +25,7 @@ public class ActivityMailWrite extends AppCompatActivity{
         setContentView(R.layout.layout_mail_write);
 
         sendButton=findViewById(R.id.sendButton);
-        titleTextBox=findViewById(R.id.titleTextBox);
+        titleTextBox=findViewById(R.id.taskTitleTextBox);
         fromTextBox=findViewById(R.id.fromTextBox);
         toTextBox=findViewById(R.id.toTextBox);
         contextTextBox=findViewById(R.id.contextTextBox);

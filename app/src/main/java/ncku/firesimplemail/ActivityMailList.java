@@ -39,10 +39,10 @@ public class ActivityMailList extends AppCompatActivity{
 
     private AdapterView.OnItemClickListener newMailClickedHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
+
             Intent myIntent = new Intent(ActivityMailList.this, ActivityMailView.class);
             MailHead selected = (MailHead)parent.getItemAtPosition(position);
-            Mail mail=client.getMail("hi");
-            myIntent.putExtra("Class", mail);
+            myIntent.putExtra("selectedId", selected.getId());
             ActivityMailList.this.startActivity(myIntent);
         }
     };

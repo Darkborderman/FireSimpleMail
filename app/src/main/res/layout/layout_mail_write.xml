@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/titleTextBox"
+        android:id="@+id/taskTitleTextBox"
         android:layout_width="343dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -26,8 +26,8 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="from"
-        app:layout_constraintStart_toStartOf="@+id/titleTextBox"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextBox" />
+        app:layout_constraintStart_toStartOf="@+id/taskTitleTextBox"
+        app:layout_constraintTop_toBottomOf="@+id/taskTitleTextBox" />
 
     <EditText
         android:id="@+id/toTextBox"

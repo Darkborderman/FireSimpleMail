@@ -20,30 +20,28 @@ public class ActivityTaskList extends AppCompatActivity {
     
     //public ArrayList<String> tasks = new ArrayList<>();
 
+    private Client client=new Client("localhost",1111);
 
-    private ArrayList<Task> tasks = new ArrayList<Task>();
+    private ArrayList<TaskHead> tasks = new ArrayList<TaskHead>();
 
-    public static final String INTENT_TASK_TITLE = "ncku.firesimplemail.TASK_TITLE";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_task_list);
 
-        debugLog("ActivityTaskList - onCreated");
-
         Text[] text=new Text[1];
         Date date=new Date();
 
-
         Task task = new Task( "from", "to", "title",text,date,1000);
 
-        tasks.add(task);
-        debugLog(task.toString());
+        TaskHead[] th=client.getAllTask();
+        for(int i=0;i<=th.length-1;i++)
+        {
+            tasks.add(th[i]);
+        }
 
-        ArrayAdapter<Task> adapter = new ArrayAdapter<> (this,
+        ArrayAdapter<TaskHead> adapter = new ArrayAdapter<> (this,
                 android.R.layout.simple_list_item_1, tasks);
-        // ListView is a legacy, but newer RecyclerView does not support ArrayAdapter
-        // Another solution: https://github.com/passsy/ArrayAdapter
         ListView listView = findViewById(R.id.listView);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(newTaskClickedHandler);
@@ -51,16 +49,14 @@ public class ActivityTaskList extends AppCompatActivity {
 
     private AdapterView.OnItemClickListener newTaskClickedHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
-            debugLog(parent.getItemAtPosition(position).toString());
-            Intent myIntent = new Intent(ActivityTaskList.this, ActivityTaskView.class);
-            myIntent.putExtra(INTENT_TASK_TITLE, parent.getItemAtPosition(position).toString());
-            // Note that tasks will not be flushed after navigation
+
+            Intent myIntent = new Intent(ActivityTaskList.this, ActivityTaskWrite.class);
+            TaskHead selected = (TaskHead) parent.getItemAtPosition(position);
+            myIntent.putExtra("selectedId",selected.getId());
+
+            myIntent.putExtra("Operation","update");
             ActivityTaskList.this.startActivity(myIntent);
         }
     };
 
-    public void debugLog(String str) {
-        Toast.makeText(ActivityTaskList.this, "Debug: " + str,
-                Toast.LENGTH_SHORT).show();
-    }
 }
