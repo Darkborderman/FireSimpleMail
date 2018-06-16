@@ -32,4 +32,5 @@ public class Mail implements Serializable{
     public String getBody(){
         return "Hello";
     }
+
 }
