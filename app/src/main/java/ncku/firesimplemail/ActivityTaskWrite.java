@@ -1,20 +1,29 @@
 package ncku.firesimplemail;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ActivityTaskWrite extends AppCompatActivity{
+import java.util.ArrayList;
+
+public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDialog.Callback, DropdownList.Callback{
 
     TextView taskTitleTextBox;
     TextView titleTextBox,fromTextBox,toTextBox;
     String taskTitle,title,from,to;
-    Button saveButton;
+    Button saveButton, addButton;
+    LinearLayout linearLayout;
     Client client=new Client("localhost",1111);
+    private ArrayList<DropdownList> dropdownlists = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +31,7 @@ public class ActivityTaskWrite extends AppCompatActivity{
         setContentView(R.layout.layout_task_write);
 
         final String operation=getIntent().getStringExtra("Operation");
+        linearLayout = findViewById(R.id.linearLayout);
 
         taskTitleTextBox=findViewById(R.id.taskTitleTextBox);
         titleTextBox=findViewById(R.id.titleTextBox);
@@ -34,17 +44,20 @@ public class ActivityTaskWrite extends AppCompatActivity{
         to=toTextBox.getText().toString();
 
         if(operation.equals("update")){
-
+            // get Text
             Task task=(Task)getIntent().getSerializableExtra("Class");
             taskTitleTextBox.setEnabled(false);
             taskTitleTextBox.setText(task.getTitle());
             titleTextBox.setText(task.getTitle());
             fromTextBox.setText(task.getFrom());
             toTextBox.setText(task.getTo());
-        }
-        else if(operation.equals("create")){
+            // TODO: Spinner binding
+        } else if(operation.equals("create")){
             taskTitleTextBox.setEnabled(true);
         }
+
+        addButton = findViewById(R.id.button);
+
 
         saveButton=findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -91,5 +104,28 @@ public class ActivityTaskWrite extends AppCompatActivity{
             }
         });
 
+    }
+
+    public void addDropdownList(View view) {
+        DropdownList ddt = new DropdownList(ActivityTaskWrite.this);
+        dropdownlists.add(ddt);
+        linearLayout.addView(ddt.spinner);
+    }
+
+    @Override
+    public void onDialogPositiveClick() {
+        //tasks.add(str);
+        //debugLog("Dialog OK");
+    }
+
+    @Override
+    public void onDialogNegativeClick() {
+        //debugLog("Dialog Cancel");
+    }
+
+    @Override
+    public void notifyDestruction(DropdownList list) {
+        dropdownlists.remove(list);
+        linearLayout.removeView(list.spinner);
     }
 }
