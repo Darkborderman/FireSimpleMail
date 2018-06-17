@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static ncku.firesimplemail.ActivityLogin.account;
-import static ncku.firesimplemail.ActivityLogin.password;
+import static ncku.firesimplemail.ActivityLogin.client;
 
 public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDialog.Callback, DropdownList.Callback{
 
@@ -30,7 +30,6 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
     LinearLayout linearLayout;
     String operation;
     boolean result;
-    Client client=new Client("140.116.245.100",6000);
     private ArrayList<DropdownList> dropdownlists = new ArrayList<>();
     Task task;
 
@@ -152,7 +151,6 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
 
     private Runnable connect = new Runnable() {
         public void run() {
-            client.authenticate(account,password);
             if(operation.equals("update")){
 
             }

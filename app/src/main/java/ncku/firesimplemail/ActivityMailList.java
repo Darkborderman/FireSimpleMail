@@ -15,13 +15,12 @@ import java.util.Date;
 import FSMServer.*;
 
 import static ncku.firesimplemail.ActivityLogin.account;
-import static ncku.firesimplemail.ActivityLogin.password;
+import static ncku.firesimplemail.ActivityLogin.client;
 
 
 public class ActivityMailList extends AppCompatActivity{
 
     private ArrayList<MailHead> mails = new ArrayList<MailHead>();
-    Client client=new Client("140.116.245.100",6000);
     MailHead[] mh=new MailHead[1];
 
     @Override
@@ -65,7 +64,6 @@ public class ActivityMailList extends AppCompatActivity{
 
     private Runnable connect = new Runnable() {
         public void run() {
-            client.authenticate(account,password);
             mh=client.getAllMail();
         }
     };

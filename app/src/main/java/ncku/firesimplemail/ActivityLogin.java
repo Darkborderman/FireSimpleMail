@@ -9,17 +9,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import FSMServer.*;
 
-
 public class ActivityLogin extends AppCompatActivity {
 
     Button loginButton,registerButton;
     TextView accountTextbox,passwordTextbox;
-    public static String password;
+    String password;
     public static String account;
     String operation;
     boolean result;
 
-    Client client=new Client("140.116.245.100",6000);
+    public static Client client=new Client("140.116.245.100",6000);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

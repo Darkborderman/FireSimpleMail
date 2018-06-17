@@ -6,14 +6,13 @@ import android.widget.TextView;
 import FSMServer.*;
 
 import static ncku.firesimplemail.ActivityLogin.account;
-import static ncku.firesimplemail.ActivityLogin.password;
+import static ncku.firesimplemail.ActivityLogin.client;
 
 
 public class ActivityMailView extends AppCompatActivity{
 
     Mail mail;
     TextView titleLabel,senderLabel,receiverLabel,bodyLabel;
-    Client client=new Client("140.116.245.100",6000);
     String x;
 
     @Override
@@ -50,7 +49,6 @@ public class ActivityMailView extends AppCompatActivity{
 
     private Runnable connect = new Runnable() {
         public void run() {
-            client.authenticate(account,password);
             mail=client.getMail(x);
         }
     };

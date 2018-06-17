@@ -5,14 +5,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
-import FSMServer.*;
+import android.widget.Toast;
+
+import static ncku.firesimplemail.ActivityLogin.client;
 
 
 public class ActivityFacilityList extends AppCompatActivity{
 
     Button getMailButton,writeMailButton;
     Button getTaskButton,writeTaskButton;
-    Client client=new Client("140.116.245.100",6000);
+    Button logoutButton;
+    boolean result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,5 +62,34 @@ public class ActivityFacilityList extends AppCompatActivity{
                  ActivityFacilityList.this.startActivity(myIntent);
             }
         });
+
+        //logout button
+        logoutButton=findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(connect);
+                thread.start();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if(result){
+                    Intent myIntent = new Intent(ActivityFacilityList.this, ActivityLogin.class);
+                    ActivityFacilityList.this.startActivity(myIntent);
+                }
+                else{
+                    Toast toast = Toast.makeText(ActivityFacilityList.this,"Logout Failed", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
+            }
+        });
     }
+    private Runnable connect = new Runnable() {
+        public void run() {
+            result=client.logout();
+        }
+    };
 }
