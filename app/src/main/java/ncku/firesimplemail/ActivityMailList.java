@@ -10,14 +10,19 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.Date;
+
 import FSMServer.*;
+
+import static ncku.firesimplemail.ActivityLogin.account;
+import static ncku.firesimplemail.ActivityLogin.password;
 
 
 public class ActivityMailList extends AppCompatActivity{
 
     private ArrayList<MailHead> mails = new ArrayList<MailHead>();
     Client client=new Client("140.116.245.100",6000);
-    MailHead[] mh;
+    MailHead[] mh=new MailHead[1];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +31,13 @@ public class ActivityMailList extends AppCompatActivity{
 
         Thread thread = new Thread(connect);
         thread.start();
+
         try {
             thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         if(mh!=null)
         {
             for(int i=0;i<=mh.length-1;i++)
@@ -44,7 +51,6 @@ public class ActivityMailList extends AppCompatActivity{
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(newMailClickedHandler);
         }
-
     }
 
     private AdapterView.OnItemClickListener newMailClickedHandler = new AdapterView.OnItemClickListener() {
@@ -52,13 +58,14 @@ public class ActivityMailList extends AppCompatActivity{
 
             Intent myIntent = new Intent(ActivityMailList.this, ActivityMailView.class);
             MailHead selected = (MailHead)parent.getItemAtPosition(position);
-            myIntent.putExtra("selectedId", selected.getId());
+            myIntent.putExtra("ID", selected.getId());
             ActivityMailList.this.startActivity(myIntent);
         }
     };
 
     private Runnable connect = new Runnable() {
         public void run() {
+            client.authenticate(account,password);
             mh=client.getAllMail();
         }
     };

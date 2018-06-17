@@ -16,6 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
+
+import static ncku.firesimplemail.ActivityLogin.account;
+import static ncku.firesimplemail.ActivityLogin.password;
 
 public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDialog.Callback, DropdownList.Callback{
 
@@ -24,15 +28,18 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
     String taskTitle,title,from,to;
     Button saveButton, addButton;
     LinearLayout linearLayout;
+    String operation;
+    boolean result;
     Client client=new Client("140.116.245.100",6000);
     private ArrayList<DropdownList> dropdownlists = new ArrayList<>();
+    Task task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_task_write);
 
-        final String operation=getIntent().getStringExtra("Operation");
+        operation=getIntent().getStringExtra("Operation");
         linearLayout = findViewById(R.id.linearLayout);
 
         taskTitleTextBox=findViewById(R.id.taskTitleTextBox);
@@ -71,8 +78,8 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                     String selectedId=getIntent().getStringExtra("selectedId");
                     Task task=client.getTask(selectedId);
 
-                    boolean result=client.updateTask(selectedId,task);
-                    if(result==true){
+                    //boolean result=client.updateTask(selectedId,task);
+                    if(result){
                         Toast toast = Toast.makeText(ActivityTaskWrite.this,"update success", Toast.LENGTH_SHORT);
                         toast.show();
                         Intent myIntent = new Intent(ActivityTaskWrite.this, ActivityFacilityList.class);
@@ -81,15 +88,29 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                     else{
                         Toast toast = Toast.makeText(ActivityTaskWrite.this,"update failed", Toast.LENGTH_SHORT);
                         toast.show();
-                        Intent myIntent = new Intent(ActivityTaskWrite.this, ActivityFacilityList.class);
-                        ActivityTaskWrite.this.startActivity(myIntent);
                     }
                 }
                 else if(operation.equals("create")){
 
-                    boolean result=true;
+                    Text[] text= new Text[] {
+                        new SingleText("Sorry, "),
+                        new MultiText(new String[] {
+                            "Someone fuck up the server.",
+                            "working on routing.",
+                            "ZZZzzzz."
+                        })
+                    };
+                    task=new Task(from,to,title,text,new Date(),1000);
 
-                    if(result==true){
+                    Thread thread = new Thread(connect);
+                    thread.start();
+                    try {
+                        thread.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if(result){
                         Toast toast = Toast.makeText(ActivityTaskWrite.this,"create success", Toast.LENGTH_SHORT);
                         toast.show();
                         Intent myIntent = new Intent(ActivityTaskWrite.this, ActivityFacilityList.class);
@@ -98,8 +119,6 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                     else{
                         Toast toast = Toast.makeText(ActivityTaskWrite.this,"create failed", Toast.LENGTH_SHORT);
                         toast.show();
-                        Intent myIntent = new Intent(ActivityTaskWrite.this, ActivityFacilityList.class);
-                        ActivityTaskWrite.this.startActivity(myIntent);
                     }
 
                 }
@@ -130,4 +149,17 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
         dropdownlists.remove(list);
         linearLayout.removeView(list.spinner);
     }
+
+    private Runnable connect = new Runnable() {
+        public void run() {
+            client.authenticate(account,password);
+            if(operation.equals("update")){
+
+            }
+            else if(operation.equals("create")){
+                result=client.createTask(task);
+            }
+
+        }
+    };
 }

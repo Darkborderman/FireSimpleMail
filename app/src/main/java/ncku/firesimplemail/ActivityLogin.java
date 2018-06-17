@@ -14,7 +14,9 @@ public class ActivityLogin extends AppCompatActivity {
 
     Button loginButton,registerButton;
     TextView accountTextbox,passwordTextbox;
-    String operation,account,password;
+    public static String password;
+    public static String account;
+    String operation;
     boolean result;
 
     Client client=new Client("140.116.245.100",6000);

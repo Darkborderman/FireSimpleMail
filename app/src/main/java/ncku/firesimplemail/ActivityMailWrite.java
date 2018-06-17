@@ -12,6 +12,9 @@ import java.util.Date;
 
 import FSMServer.*;
 
+import static ncku.firesimplemail.ActivityLogin.account;
+import static ncku.firesimplemail.ActivityLogin.password;
+
 
 public class ActivityMailWrite extends AppCompatActivity{
 
@@ -20,7 +23,7 @@ public class ActivityMailWrite extends AppCompatActivity{
     String title,from,to,context;
     Client client=new Client("140.116.245.100",6000);
     boolean result;
-    Mail mail;
+    Date date=new Date(System.currentTimeMillis());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +44,7 @@ public class ActivityMailWrite extends AppCompatActivity{
                 to=toTextBox.getText().toString();
                 title=titleTextBox.getText().toString();
                 context=contextTextBox.getText().toString();
-                Date date=new Date(System.currentTimeMillis());
 
-
-                mail=new Mail(from,to,title,date);
                 Thread thread = new Thread(connect);
                 thread.start();
                 try {
@@ -52,9 +52,7 @@ public class ActivityMailWrite extends AppCompatActivity{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-
-                if(result==true){
+                if(result){
 
                     Toast toast = Toast.makeText(ActivityMailWrite.this,"Success", Toast.LENGTH_LONG);
                     toast.show();
@@ -71,6 +69,8 @@ public class ActivityMailWrite extends AppCompatActivity{
 
     private Runnable connect = new Runnable() {
         public void run() {
+            Mail mail=new Mail(from,to,title,context,date);
+            client.authenticate(account,password);
             result=client.sendMail(mail);
         }
     };

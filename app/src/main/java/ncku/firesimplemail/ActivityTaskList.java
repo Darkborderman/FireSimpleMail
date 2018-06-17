@@ -17,8 +17,6 @@ import java.util.Date;
 
 
 public class ActivityTaskList extends AppCompatActivity {
-    
-    //public ArrayList<String> tasks = new ArrayList<>();
 
     Client client=new Client("140.116.245.100",6000);
 

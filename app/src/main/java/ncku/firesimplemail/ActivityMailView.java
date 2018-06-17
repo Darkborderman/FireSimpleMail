@@ -5,19 +5,31 @@ import android.os.Bundle;
 import android.widget.TextView;
 import FSMServer.*;
 
+import static ncku.firesimplemail.ActivityLogin.account;
+import static ncku.firesimplemail.ActivityLogin.password;
+
 
 public class ActivityMailView extends AppCompatActivity{
 
     Mail mail;
     TextView titleLabel,senderLabel,receiverLabel,bodyLabel;
     Client client=new Client("140.116.245.100",6000);
+    String x;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mail=(Mail)getIntent().getSerializableExtra("Class");
         setContentView(R.layout.layout_mail_view);
+
+        x=getIntent().getExtras().getString("ID");
+        Thread thread = new Thread(connect);
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         String title=mail.getTitle();
         titleLabel=findViewById(R.id.titleLabel);
@@ -35,4 +47,11 @@ public class ActivityMailView extends AppCompatActivity{
         bodyLabel.setText(mail.getBody());
 
     }
+
+    private Runnable connect = new Runnable() {
+        public void run() {
+            client.authenticate(account,password);
+            mail=client.getMail(x);
+        }
+    };
 }
