@@ -24,9 +24,7 @@ public class ActivityFacilityList extends AppCompatActivity{
         getMailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MailHead[] mailHeads=client.getAllMail();
                 Intent myIntent = new Intent(ActivityFacilityList.this, ActivityMailList.class);
-                myIntent.putExtra("Class",mailHeads);
                 ActivityFacilityList.this.startActivity(myIntent);
             }
         });

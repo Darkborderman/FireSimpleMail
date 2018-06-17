@@ -12,10 +12,9 @@ import FSMServer.*;
 
 public class ActivityLogin extends AppCompatActivity {
 
-    Button loginButton,registerButton,testButton;
+    Button loginButton,registerButton;
     TextView accountTextbox,passwordTextbox;
-    String operation;
-    String account,password;
+    String operation,account,password;
     boolean result;
 
     Client client=new Client("140.116.245.100",6000);
@@ -39,7 +38,7 @@ public class ActivityLogin extends AppCompatActivity {
                 password=passwordTextbox.getText().toString();
 
                 operation="login";
-                Thread thread = new Thread(mutiThread);
+                Thread thread = new Thread(connect);
                 thread.start();
                 try {
                     thread.join();
@@ -68,7 +67,7 @@ public class ActivityLogin extends AppCompatActivity {
                 password=passwordTextbox.getText().toString();
 
                 operation="register";
-                Thread thread = new Thread(mutiThread);
+                Thread thread = new Thread(connect);
                 thread.start();
                 try {
                     thread.join();
@@ -89,7 +88,7 @@ public class ActivityLogin extends AppCompatActivity {
         });
     }
 
-    private Runnable mutiThread = new Runnable() {
+    private Runnable connect = new Runnable() {
         public void run() {
             if(operation.equals("login")) result=client.authenticate(account,password);
             else if(operation.equals("register")) result=client.regist(account,password);

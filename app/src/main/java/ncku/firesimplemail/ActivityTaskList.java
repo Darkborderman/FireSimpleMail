@@ -35,16 +35,20 @@ public class ActivityTaskList extends AppCompatActivity {
         Task task = new Task( "from", "to", "title",text,date,1000);
 
         TaskHead[] th=client.getAllTask();
-        for(int i=0;i<=th.length-1;i++)
-        {
-            tasks.add(th[i]);
-        }
 
-        ArrayAdapter<TaskHead> adapter = new ArrayAdapter<> (this,
-                android.R.layout.simple_list_item_1, tasks);
-        ListView listView = findViewById(R.id.listView);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(newTaskClickedHandler);
+        if(th!=null)
+        {
+            for(int i=0;i<=th.length-1;i++)
+            {
+                tasks.add(th[i]);
+            }
+
+            ArrayAdapter<TaskHead> adapter = new ArrayAdapter<> (this,
+                    android.R.layout.simple_list_item_1, tasks);
+            ListView listView = findViewById(R.id.listView);
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(newTaskClickedHandler);
+        }
     }
 
     private AdapterView.OnItemClickListener newTaskClickedHandler = new AdapterView.OnItemClickListener() {
@@ -58,5 +62,4 @@ public class ActivityTaskList extends AppCompatActivity {
             ActivityTaskList.this.startActivity(myIntent);
         }
     };
-
 }

@@ -19,6 +19,8 @@ public class ActivityMailWrite extends AppCompatActivity{
     TextView titleTextBox,fromTextBox,toTextBox,contextTextBox;
     String title,from,to,context;
     Client client=new Client("140.116.245.100",6000);
+    boolean result;
+    Mail mail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +43,16 @@ public class ActivityMailWrite extends AppCompatActivity{
                 context=contextTextBox.getText().toString();
                 Date date=new Date(System.currentTimeMillis());
 
-                Mail mail=new Mail(from,to,title,date);
-                Client client=new Client("localhost",1111);
 
-                boolean result=client.sendMail(mail);
+                mail=new Mail(from,to,title,date);
+                Thread thread = new Thread(connect);
+                thread.start();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
 
                 if(result==true){
 
@@ -59,6 +67,11 @@ public class ActivityMailWrite extends AppCompatActivity{
                 }
             }
         });
-
     }
+
+    private Runnable connect = new Runnable() {
+        public void run() {
+            result=client.sendMail(mail);
+        }
+    };
 }

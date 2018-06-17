@@ -17,23 +17,33 @@ public class ActivityMailList extends AppCompatActivity{
 
     private ArrayList<MailHead> mails = new ArrayList<MailHead>();
     Client client=new Client("140.116.245.100",6000);
+    MailHead[] mh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_mail_list);
 
-        MailHead[] mh=client.getAllMail();
-        for(int i=0;i<=mh.length-1;i++)
-        {
-            mails.add(mh[i]);
+        Thread thread = new Thread(connect);
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        if(mh!=null)
+        {
+            for(int i=0;i<=mh.length-1;i++)
+            {
+                mails.add(mh[i]);
+            }
 
-        ArrayAdapter<MailHead> adapter = new ArrayAdapter<> (this,
-            android.R.layout.simple_list_item_1, mails);
-        ListView listView = findViewById(R.id.listView2);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(newMailClickedHandler);
+            ArrayAdapter<MailHead> adapter = new ArrayAdapter<> (this,
+                    android.R.layout.simple_list_item_1, mails);
+            ListView listView = findViewById(R.id.listView2);
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(newMailClickedHandler);
+        }
 
     }
 
@@ -46,4 +56,12 @@ public class ActivityMailList extends AppCompatActivity{
             ActivityMailList.this.startActivity(myIntent);
         }
     };
+
+    private Runnable connect = new Runnable() {
+        public void run() {
+            mh=client.getAllMail();
+        }
+    };
 }
+
+
