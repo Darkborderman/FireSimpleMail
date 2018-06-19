@@ -1,34 +1,27 @@
 package ncku.firesimplemail;
 
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import FSMServer.*;
-
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Date;
-
 import static ncku.firesimplemail.ActivityLogin.account;
 import static ncku.firesimplemail.ActivityLogin.client;
 
 public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDialog.Callback, DropdownList.Callback{
 
     TextView taskTitleTextBox;
-    TextView titleTextBox,fromTextBox,toTextBox;
+    TextView titleTextBox,toTextBox;
     String taskTitle,title,from,to;
     Button saveButton, addButton;
     LinearLayout linearLayout;
-    String operation;
+    String operation,ID;
     boolean result;
     private ArrayList<DropdownList> dropdownlists = new ArrayList<>();
     Task task;
@@ -43,22 +36,28 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
 
         taskTitleTextBox=findViewById(R.id.taskTitleTextBox);
         titleTextBox=findViewById(R.id.titleTextBox);
-        fromTextBox=findViewById(R.id.fromTextBox);
         toTextBox=findViewById(R.id.toTextBox);
 
         taskTitle=taskTitleTextBox.getText().toString();
         title=titleTextBox.getText().toString();
-        from=fromTextBox.getText().toString();
+        from=account+"@mail.FSM.com";
         to=toTextBox.getText().toString();
 
         if(operation.equals("update")){
-            // get Text
-            String selectedId=getIntent().getStringExtra("selectedId");
-            Task task=client.getTask(selectedId);
+
+            ID=getIntent().getStringExtra("ID");
+            Thread thread = new Thread(fetchTask);
+            thread.start();
+
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             taskTitleTextBox.setEnabled(false);
             taskTitleTextBox.setText(task.getTitle());
             titleTextBox.setText(task.getTitle());
-            fromTextBox.setText(task.getSender());
             toTextBox.setText(task.getReceiver());
             // TODO: Spinner binding
         } else if(operation.equals("create")){
@@ -67,17 +66,22 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
 
         addButton = findViewById(R.id.button);
 
-
         saveButton=findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if(operation.equals("update")){
-                    String selectedId=getIntent().getStringExtra("selectedId");
-                    Task task=client.getTask(selectedId);
 
-                    //boolean result=client.updateTask(selectedId,task);
+                    Thread thread = new Thread(sendTask);
+                    thread.start();
+
+                    try {
+                        thread.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
                     if(result){
                         Toast toast = Toast.makeText(ActivityTaskWrite.this,"update success", Toast.LENGTH_SHORT);
                         toast.show();
@@ -152,12 +156,23 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
     private Runnable connect = new Runnable() {
         public void run() {
             if(operation.equals("update")){
-
+                result=client.updateTask(ID,task);
             }
             else if(operation.equals("create")){
                 result=client.createTask(task);
             }
 
+        }
+    };
+    private Runnable fetchTask= new Runnable(){
+        public void run(){
+            task=client.getTask(ID);
+        }
+    };
+    private Runnable sendTask= new Runnable() {
+        @Override
+        public void run() {
+            result=client.updateTask(ID,task);
         }
     };
 }

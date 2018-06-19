@@ -1,6 +1,5 @@
 package ncku.firesimplemail;
 
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,31 +8,31 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 import FSMServer.*;
-
 import java.util.ArrayList;
-import java.util.Date;
+
+import static ncku.firesimplemail.ActivityLogin.client;
 
 
 public class ActivityTaskList extends AppCompatActivity {
 
-    Client client=new Client("140.116.245.100",6000);
     Button writeTaskButton;
+    TaskHead[] th;
 
-    private ArrayList<TaskHead> tasks = new ArrayList<TaskHead>();
-
+    private ArrayList<TaskHead> tasks = new ArrayList<>();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_task_list);
 
-        Text[] text=new Text[1];
-        Date date=new Date();
+        Thread thread = new Thread(connect);
+        thread.start();
 
-        Task task = new Task( "from", "to", "title",text,date,1000);
-
-        TaskHead[] th=client.getAllTask();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         if(th!=null)
         {
@@ -66,9 +65,15 @@ public class ActivityTaskList extends AppCompatActivity {
 
             Intent myIntent = new Intent(ActivityTaskList.this, ActivityTaskWrite.class);
             TaskHead selected = (TaskHead) parent.getItemAtPosition(position);
-            myIntent.putExtra("selectedId",selected.getId());
+            myIntent.putExtra("ID",selected.getId());
             myIntent.putExtra("Operation","update");
             ActivityTaskList.this.startActivity(myIntent);
+        }
+    };
+
+    private Runnable connect = new Runnable() {
+        public void run() {
+            th=client.getAllTask();
         }
     };
 }

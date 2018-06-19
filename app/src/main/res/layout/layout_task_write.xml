@@ -30,28 +30,16 @@
         app:layout_constraintTop_toBottomOf="@+id/taskTitleTextBox" />
 
     <EditText
-        android:id="@+id/fromTextBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="from"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextBox" />
-
-    <EditText
         android:id="@+id/toTextBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="to"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fromTextBox" />
+        app:layout_constraintTop_toBottomOf="@+id/titleTextBox" />
 
     <Button
         android:id="@+id/saveButton"
