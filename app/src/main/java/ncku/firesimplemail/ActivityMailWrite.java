@@ -7,12 +7,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.Date;
+import FSMServer.*;
+import static ncku.firesimplemail.ActivityLogin.account;
+import static ncku.firesimplemail.ActivityLogin.client;
 
 public class ActivityMailWrite extends AppCompatActivity{
 
     Button sendButton;
-    TextView titleTextBox,fromTextBox,toTextBox,contextTextBox;
+    TextView titleTextBox,toTextBox,contextTextBox;
     String title,from,to,context;
+    boolean result;
+    Date date=new Date(System.currentTimeMillis());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +27,6 @@ public class ActivityMailWrite extends AppCompatActivity{
 
         sendButton=findViewById(R.id.sendButton);
         titleTextBox=findViewById(R.id.taskTitleTextBox);
-        fromTextBox=findViewById(R.id.fromTextBox);
         toTextBox=findViewById(R.id.toTextBox);
         contextTextBox=findViewById(R.id.contextTextBox);
 
@@ -29,29 +34,36 @@ public class ActivityMailWrite extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
-                from=fromTextBox.getText().toString();
+                from=account+"@mail.FSM.com";
                 to=toTextBox.getText().toString();
                 title=titleTextBox.getText().toString();
                 context=contextTextBox.getText().toString();
 
-                Mail mail=new Mail(from,to,title,context);
-                Client client=new Client("localhost",1111);
-
-                boolean result=client.sendMail(mail);
-
-                if(result==true){
-
-                    Toast toast = Toast.makeText(ActivityMailWrite.this,"Success", Toast.LENGTH_LONG);
+                Thread thread = new Thread(connect);
+                thread.start();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if(result){
+                    Toast toast = Toast.makeText(ActivityMailWrite.this,"Success", Toast.LENGTH_SHORT);
                     toast.show();
                     Intent myIntent = new Intent(ActivityMailWrite.this, ActivityFacilityList.class);
                     ActivityMailWrite.this.startActivity(myIntent);
                 }
                 else{
-                    Toast toast = Toast.makeText(ActivityMailWrite.this,"Failed.", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(ActivityMailWrite.this,"Fail", Toast.LENGTH_SHORT);
                     toast.show();
                 }
             }
         });
-
     }
+
+    private Runnable connect = new Runnable() {
+        public void run() {
+            Mail mail=new Mail(from,to,title,context,date);
+            result=client.sendMail(mail);
+        }
+    };
 }

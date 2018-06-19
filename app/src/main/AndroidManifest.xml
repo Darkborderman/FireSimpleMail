@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ncku.firesimplemail">
 
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -43,6 +44,7 @@
         </activity>
 
         <activity
+            android:windowSoftInputMode="adjustPan"
             android:label="Task Write"
             android:name=".ActivityTaskWrite">
         </activity>

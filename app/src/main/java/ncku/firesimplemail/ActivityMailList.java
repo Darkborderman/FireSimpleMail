@@ -8,41 +8,66 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-
 import java.util.ArrayList;
+import FSMServer.*;
+import static ncku.firesimplemail.ActivityLogin.client;
 
 public class ActivityMailList extends AppCompatActivity{
 
-    private ArrayList<MailHead> mails = new ArrayList<MailHead>();
-    Client client=new Client("localhost",1111);
+    private ArrayList<MailHead> mails = new ArrayList<>();
+    MailHead[] mh;
+    Button writeMailButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_mail_list);
 
-        MailHead[] mh=client.getAllMail();
-        for(int i=0;i<=mh.length-1;i++)
-        {
-            mails.add(mh[i]);
+        Thread thread = new Thread(connect);
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
-        ArrayAdapter<MailHead> adapter = new ArrayAdapter<> (this,
-            android.R.layout.simple_list_item_1, mails);
-        ListView listView = findViewById(R.id.listView2);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(newMailClickedHandler);
+        if(mh!=null)
+        {
+            for(int i=0;i<=mh.length-1;i++) mails.add(mh[i]);
 
+            ArrayAdapter<MailHead> adapter = new ArrayAdapter<> (this,
+                    android.R.layout.simple_list_item_1, mails);
+            ListView listView = findViewById(R.id.listView2);
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(newMailClickedHandler);
+        }
+        //write mail button
+        writeMailButton=findViewById(R.id.writeMailButton);
+        writeMailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(ActivityMailList.this, ActivityMailWrite.class);
+                ActivityMailList.this.startActivity(myIntent);
+            }
+        });
     }
 
     private AdapterView.OnItemClickListener newMailClickedHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
 
             Intent myIntent = new Intent(ActivityMailList.this, ActivityMailView.class);
-            Mail mail=client.getMail("hi");
-            myIntent.putExtra("Class", mail);
+            MailHead selected = (MailHead)parent.getItemAtPosition(position);
+            myIntent.putExtra("ID", selected.getId());
             ActivityMailList.this.startActivity(myIntent);
         }
     };
+
+    private Runnable connect = new Runnable() {
+        public void run() {
+            mh=client.getAllMail();
+        }
+    };
 }
+
+

@@ -10,32 +10,28 @@
         android:id="@+id/getTaskButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="get task"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/writeTaskButton"
+        android:id="@+id/getMailButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="write task"
+        android:layout_marginTop="24dp"
+        android:text="get mail"
         app:layout_constraintStart_toStartOf="@+id/getTaskButton"
         app:layout_constraintTop_toBottomOf="@+id/getTaskButton" />
 
     <Button
-        android:id="@+id/getMailButton"
+        android:id="@+id/logoutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="get mail"
-        app:layout_constraintStart_toStartOf="@+id/writeTaskButton"
-        app:layout_constraintTop_toBottomOf="@+id/writeTaskButton" />
-
-    <Button
-        android:id="@+id/writeMailButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="write mail"
-        app:layout_constraintStart_toStartOf="@+id/getMailButton"
-        app:layout_constraintTop_toBottomOf="@+id/getMailButton" />
+        android:layout_marginStart="260dp"
+        android:layout_marginTop="424dp"
+        android:text="logout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

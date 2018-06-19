@@ -7,14 +7,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import FSMServer.*;
 
 public class ActivityLogin extends AppCompatActivity {
 
-    Button loginButton,registerButton,testButton;
+    Button loginButton,registerButton;
     TextView accountTextbox,passwordTextbox;
-    String account,password;
+    String password;
+    public static String account;
+    String operation;
+    boolean result;
 
-    Client client=new Client("192.168.43.203",3000);
+    public static Client client=new Client("140.116.245.100",6000);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +38,16 @@ public class ActivityLogin extends AppCompatActivity {
                 account=accountTextbox.getText().toString();
                 password=passwordTextbox.getText().toString();
 
-                boolean result=client.authenticate(account,password);
+                operation="login";
+                Thread thread = new Thread(connect);
+                thread.start();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-                if(result==true){
+                if(result){
                     Intent myIntent = new Intent(ActivityLogin.this, ActivityFacilityList.class);
                     ActivityLogin.this.startActivity(myIntent);
                 }
@@ -56,9 +67,17 @@ public class ActivityLogin extends AppCompatActivity {
                 account=accountTextbox.getText().toString();
                 password=passwordTextbox.getText().toString();
 
-                boolean result=client.regist(account,password);
+                operation="register";
+                Thread thread = new Thread(connect);
+                thread.start();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-                if(result==true){
+                if(result){
+
                     Intent myIntent = new Intent(ActivityLogin.this, ActivityFacilityList.class);
                     ActivityLogin.this.startActivity(myIntent);
                 }
@@ -69,4 +88,12 @@ public class ActivityLogin extends AppCompatActivity {
             }
         });
     }
+
+    private Runnable connect = new Runnable() {
+        public void run() {
+            if(operation.equals("login")) result=client.authenticate(account,password);
+            else if(operation.equals("register")) result=client.regist(account,password);
+
+        }
+    };
 }

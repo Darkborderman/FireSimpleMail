@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
+import android.widget.Toast;
+import static ncku.firesimplemail.ActivityLogin.client;
 
 public class ActivityFacilityList extends AppCompatActivity{
 
     Button getMailButton,writeMailButton;
     Button getTaskButton,writeTaskButton;
-    Client client=new Client("localhost",1111);
+    Button logoutButton;
+    boolean result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,22 +25,11 @@ public class ActivityFacilityList extends AppCompatActivity{
         getMailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MailHead[] mailHeads=client.getAllMail();
                 Intent myIntent = new Intent(ActivityFacilityList.this, ActivityMailList.class);
-                myIntent.putExtra("Class",mailHeads);
                 ActivityFacilityList.this.startActivity(myIntent);
             }
         });
 
-        //write mail button
-        writeMailButton=findViewById(R.id.writeMailButton);
-        writeMailButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                 Intent myIntent = new Intent(ActivityFacilityList.this, ActivityMailWrite.class);
-                 ActivityFacilityList.this.startActivity(myIntent);
-            }
-        });
 
         //get task button
         getTaskButton=findViewById(R.id.getTaskButton);
@@ -49,15 +41,34 @@ public class ActivityFacilityList extends AppCompatActivity{
             }
         });
 
-        //write task button
-        writeTaskButton=findViewById(R.id.writeTaskButton);
-        writeTaskButton.setOnClickListener(new View.OnClickListener() {
+
+        //logout button
+        logoutButton=findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 Intent myIntent = new Intent(ActivityFacilityList.this, ActivityTaskWrite.class);
-                 myIntent.putExtra("Operation","create");
-                 ActivityFacilityList.this.startActivity(myIntent);
+                Thread thread = new Thread(connect);
+                thread.start();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if(result){
+                    Intent myIntent = new Intent(ActivityFacilityList.this, ActivityLogin.class);
+                    ActivityFacilityList.this.startActivity(myIntent);
+                }
+                else{
+                    Toast toast = Toast.makeText(ActivityFacilityList.this,"Logout Failed", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
             }
         });
     }
+    private Runnable connect = new Runnable() {
+        public void run() {
+            result=client.logout();
+        }
+    };
 }
