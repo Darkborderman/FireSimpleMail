@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import static ncku.firesimplemail.ActivityLogin.account;
 import static ncku.firesimplemail.ActivityLogin.client;
 
@@ -80,59 +82,37 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
             @Override
             public void onClick(View v) {
 
-                if(operation.equals("update")){
-
-                    Thread thread = new Thread(sendTask);
-                    thread.start();
-
-                    try {
-                        thread.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    if(result){
-                        Toast toast = Toast.makeText(ActivityTaskWrite.this,"update success", Toast.LENGTH_SHORT);
-                        toast.show();
-                        Intent myIntent = new Intent(ActivityTaskWrite.this, ActivityFacilityList.class);
-                        ActivityTaskWrite.this.startActivity(myIntent);
-                    }
-                    else{
-                        Toast toast = Toast.makeText(ActivityTaskWrite.this,"update failed", Toast.LENGTH_SHORT);
-                        toast.show();
+                ArrayList<Text> texts = new ArrayList<>();
+                for (int i = 0; i < dropdownlists.size(); i++) {
+                    DropdownList ddt = dropdownlists.get(i);
+                    // Note: we can't downcast Object[] to String[], use toArray(T [])
+                    List<String> list = ddt.options.subList(1, ddt.options.size() - 2);
+                    String [] strs = list.toArray(new String[list.size()]);
+                    if (strs.length == 1) {
+                        texts.add(new SingleText(strs[0]));
+                    } else if (strs.length > 1) {
+                        texts.add(new MultiText(strs));
                     }
                 }
-                else if(operation.equals("create")){
+                task = new Task(from,to,title, texts.toArray(new Text[texts.size()]),new Date(),1000);
 
-                    Text[] text= new Text[] {
-                        new SingleText("Sorry, "),
-                        new MultiText(new String[] {
-                            "Someone fuck up the server.",
-                            "working on routing.",
-                            "ZZZzzzz."
-                        })
-                    };
-                    task=new Task(from,to,title,text,new Date(),1000);
+                Thread thread = new Thread(connect);
+                thread.start();
 
-                    Thread thread = new Thread(connect);
-                    thread.start();
-                    try {
-                        thread.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-                    if(result){
-                        Toast toast = Toast.makeText(ActivityTaskWrite.this,"create success", Toast.LENGTH_SHORT);
-                        toast.show();
-                        Intent myIntent = new Intent(ActivityTaskWrite.this, ActivityFacilityList.class);
-                        ActivityTaskWrite.this.startActivity(myIntent);
-                    }
-                    else{
-                        Toast toast = Toast.makeText(ActivityTaskWrite.this,"create failed", Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-
+                if(result) {
+                    Toast toast = Toast.makeText(ActivityTaskWrite.this,operation + " success", Toast.LENGTH_SHORT);
+                    toast.show();
+                    Intent myIntent = new Intent(ActivityTaskWrite.this, ActivityFacilityList.class);
+                    ActivityTaskWrite.this.startActivity(myIntent);
+                } else {
+                    Toast toast = Toast.makeText(ActivityTaskWrite.this,operation + " failed", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             }
         });
