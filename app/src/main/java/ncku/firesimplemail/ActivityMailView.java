@@ -4,23 +4,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 import FSMServer.*;
-
-import static ncku.firesimplemail.ActivityLogin.account;
 import static ncku.firesimplemail.ActivityLogin.client;
-
 
 public class ActivityMailView extends AppCompatActivity{
 
     Mail mail;
     TextView titleLabel,senderLabel,receiverLabel,bodyLabel;
-    String x;
+    String ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_mail_view);
 
-        x=getIntent().getExtras().getString("ID");
+        ID=getIntent().getExtras().getString("ID");
         Thread thread = new Thread(connect);
         thread.start();
 
@@ -30,18 +27,12 @@ public class ActivityMailView extends AppCompatActivity{
             e.printStackTrace();
         }
 
-        String title=mail.getTitle();
         titleLabel=findViewById(R.id.titleLabel);
-        titleLabel.setText(title);
-
-        String sender=mail.getSender();
+        titleLabel.setText(mail.getTitle());
         senderLabel=findViewById(R.id.senderLabel);
-        senderLabel.setText(sender);
-
-        String receiver=mail.getReceiver();
+        senderLabel.setText(mail.getSender());
         receiverLabel=findViewById(R.id.receiverLabel);
-        receiverLabel.setText(receiver);
-
+        receiverLabel.setText(mail.getReceiver());
         bodyLabel=findViewById(R.id.bodyLabel);
         bodyLabel.setText(mail.getBody());
 
@@ -49,7 +40,7 @@ public class ActivityMailView extends AppCompatActivity{
 
     private Runnable connect = new Runnable() {
         public void run() {
-            mail=client.getMail(x);
+            mail=client.getMail(ID);
         }
     };
 }

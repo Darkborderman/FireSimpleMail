@@ -6,9 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
 import android.widget.Toast;
-
 import static ncku.firesimplemail.ActivityLogin.client;
-
 
 public class ActivityFacilityList extends AppCompatActivity{
 

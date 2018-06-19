@@ -6,22 +6,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import java.util.ArrayList;
-import java.util.Date;
-
 import FSMServer.*;
-
-import static ncku.firesimplemail.ActivityLogin.account;
 import static ncku.firesimplemail.ActivityLogin.client;
-
 
 public class ActivityMailList extends AppCompatActivity{
 
-    private ArrayList<MailHead> mails = new ArrayList<MailHead>();
-    MailHead[] mh=new MailHead[1];
+    private ArrayList<MailHead> mails = new ArrayList<>();
+    MailHead[] mh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +32,7 @@ public class ActivityMailList extends AppCompatActivity{
 
         if(mh!=null)
         {
-            for(int i=0;i<=mh.length-1;i++)
-            {
-                mails.add(mh[i]);
-            }
+            for(int i=0;i<=mh.length-1;i++) mails.add(mh[i]);
 
             ArrayAdapter<MailHead> adapter = new ArrayAdapter<> (this,
                     android.R.layout.simple_list_item_1, mails);

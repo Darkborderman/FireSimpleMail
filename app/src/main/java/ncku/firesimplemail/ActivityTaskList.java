@@ -55,7 +55,6 @@ public class ActivityTaskList extends AppCompatActivity {
             Intent myIntent = new Intent(ActivityTaskList.this, ActivityTaskWrite.class);
             TaskHead selected = (TaskHead) parent.getItemAtPosition(position);
             myIntent.putExtra("selectedId",selected.getId());
-
             myIntent.putExtra("Operation","update");
             ActivityTaskList.this.startActivity(myIntent);
         }

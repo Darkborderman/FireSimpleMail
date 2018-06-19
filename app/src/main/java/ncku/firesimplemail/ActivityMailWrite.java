@@ -9,10 +9,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.Date;
 import FSMServer.*;
-
 import static ncku.firesimplemail.ActivityLogin.account;
 import static ncku.firesimplemail.ActivityLogin.client;
-
 
 public class ActivityMailWrite extends AppCompatActivity{
 
