@@ -59,7 +59,16 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
             taskTitleTextBox.setText(task.getTitle());
             titleTextBox.setText(task.getTitle());
             toTextBox.setText(task.getReceiver());
-            // TODO: Spinner binding
+
+            Text[] texts = task.getText();
+            String[] strs;
+            for (int i = 0; i < texts.length; i++) {
+                strs = texts[i].getAllText();
+                DropdownList ddt = new DropdownList(ActivityTaskWrite.this, strs);
+                dropdownlists.add(ddt);
+                linearLayout.addView(ddt.spinner);
+            }
+
         } else if(operation.equals("create")){
             taskTitleTextBox.setEnabled(true);
         }
@@ -131,7 +140,7 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
     }
 
     public void addDropdownList(View view) {
-        DropdownList ddt = new DropdownList(ActivityTaskWrite.this);
+        DropdownList ddt = new DropdownList(ActivityTaskWrite.this, null);
         dropdownlists.add(ddt);
         linearLayout.addView(ddt.spinner);
     }
