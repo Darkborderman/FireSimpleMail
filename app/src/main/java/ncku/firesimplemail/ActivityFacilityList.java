@@ -30,15 +30,6 @@ public class ActivityFacilityList extends AppCompatActivity{
             }
         });
 
-        //write mail button
-        writeMailButton=findViewById(R.id.writeMailButton);
-        writeMailButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                 Intent myIntent = new Intent(ActivityFacilityList.this, ActivityMailWrite.class);
-                 ActivityFacilityList.this.startActivity(myIntent);
-            }
-        });
 
         //get task button
         getTaskButton=findViewById(R.id.getTaskButton);
@@ -50,16 +41,6 @@ public class ActivityFacilityList extends AppCompatActivity{
             }
         });
 
-        //write task button
-        writeTaskButton=findViewById(R.id.writeTaskButton);
-        writeTaskButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                 Intent myIntent = new Intent(ActivityFacilityList.this, ActivityTaskWrite.class);
-                 myIntent.putExtra("Operation","create");
-                 ActivityFacilityList.this.startActivity(myIntent);
-            }
-        });
 
         //logout button
         logoutButton=findViewById(R.id.logoutButton);

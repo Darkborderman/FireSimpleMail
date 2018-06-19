@@ -19,6 +19,7 @@ import java.util.Date;
 public class ActivityTaskList extends AppCompatActivity {
 
     Client client=new Client("140.116.245.100",6000);
+    Button writeTaskButton;
 
     private ArrayList<TaskHead> tasks = new ArrayList<TaskHead>();
 
@@ -47,6 +48,17 @@ public class ActivityTaskList extends AppCompatActivity {
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(newTaskClickedHandler);
         }
+        //write task button
+        writeTaskButton=findViewById(R.id.writeTaskButton);
+        writeTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(ActivityTaskList.this, ActivityTaskWrite.class);
+                myIntent.putExtra("Operation","create");
+                ActivityTaskList.this.startActivity(myIntent);
+            }
+        });
+
     }
 
     private AdapterView.OnItemClickListener newTaskClickedHandler = new AdapterView.OnItemClickListener() {

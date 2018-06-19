@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import java.util.ArrayList;
 import FSMServer.*;
@@ -15,6 +16,7 @@ public class ActivityMailList extends AppCompatActivity{
 
     private ArrayList<MailHead> mails = new ArrayList<>();
     MailHead[] mh;
+    Button writeMailButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,15 @@ public class ActivityMailList extends AppCompatActivity{
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(newMailClickedHandler);
         }
+        //write mail button
+        writeMailButton=findViewById(R.id.writeMailButton);
+        writeMailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(ActivityMailList.this, ActivityMailWrite.class);
+                ActivityMailList.this.startActivity(myIntent);
+            }
+        });
     }
 
     private AdapterView.OnItemClickListener newMailClickedHandler = new AdapterView.OnItemClickListener() {
