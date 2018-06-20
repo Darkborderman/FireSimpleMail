@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import static ncku.firesimplemail.ActivityLogin.account;
 import static ncku.firesimplemail.ActivityLogin.client;
@@ -32,15 +33,18 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
 
 
     TextView titleTextBox,toTextBox;
+
     String title,from,to;
-    Button saveButton, addButton;
+    Button saveButton, addButton, startButton;
     LinearLayout linearLayout;
     String operation,ID;
     Switch scheduleButton, durationButton;
     EditText dateTextBox, durationTextBox;
     Calendar calendar = Calendar.getInstance();
-    boolean schedule, duration;
+    Random rand = new Random();
+    boolean schedule = false, duration = false;
     boolean result;
+    String body = "";
     private ArrayList<DropdownList> dropdownlists = new ArrayList<>();
     Task task;
 
@@ -55,10 +59,7 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
         titleTextBox=findViewById(R.id.titleTextBox);
         toTextBox=findViewById(R.id.toTextBox);
 
-        title=titleTextBox.getText().toString();
-        from=account+"@mail.FSM.com";
-        to=toTextBox.getText().toString();
-
+        from = account + "@mail.FSM.com";
 
         dateTextBox = findViewById(R.id.dateTextBox);
         dateTextBox.setInputType(InputType.TYPE_NULL);
@@ -96,6 +97,8 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                 schedule = isChecked;
             }
         });
+
+
 
         if(operation.equals("update")){
 
@@ -202,7 +205,39 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
             }
         });
 
+        startButton = findViewById(R.id.startButton);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (true) { // Run task or stop
+                    if (!schedule && !duration) { // Send mail immediately
 
+                        Thread thread = new Thread(sendMail);
+                        thread.start();
+                        try {
+                            thread.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        if (result) {
+                            Toast toast = Toast.makeText(ActivityTaskWrite.this, "successful", Toast.LENGTH_SHORT);
+                            toast.show();
+                            //Intent myIntent = new Intent(ActivityTaskWrite.this, ActivityFacilityList.class);
+                            //ActivityTaskWrite.this.startActivity(myIntent);
+                        } else {
+                            Toast toast = Toast.makeText(ActivityTaskWrite.this, " failed", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    } else {
+                        // Alarm...
+                    }
+                } else {
+                    // Stop the alarm task
+                }
+            }
+        });
     }
 
     public void selectTimeAndDate() {
@@ -254,6 +289,29 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
         dropdownlists.remove(list);
         linearLayout.removeView(list.spinner);
     }
+
+    private Runnable sendMail = new Runnable() {
+        public void run() {
+            taskTitle = taskTitleTextBox.getText().toString();
+            title = titleTextBox.getText().toString();
+            to = toTextBox.getText().toString();
+            body = "";
+            for (int i = 0; i < dropdownlists.size(); i++) {
+                DropdownList ddt = dropdownlists.get(i);
+                if (ddt.options.size() == 3) // Empty dropdown list
+                    continue;
+
+                int index = ddt.spinner.getSelectedItemPosition();
+                if (index == 0 || index == -1) {// <random> or not selected
+                    index = (rand.nextInt() % (ddt.options.size() - 3)) + 1;
+                }
+                body += ddt.options.get(index);
+                //Toast.makeText(ActivityTaskWrite.this,body, Toast.LENGTH_SHORT).show();
+            }
+            Mail mail=new Mail(from, to, title, body, new Date());
+            result=client.sendMail(mail);
+        }
+    };
 
     private Runnable connect = new Runnable() {
         public void run() {

@@ -30,7 +30,7 @@ public class DropdownList {
     }
 
     private void addDefaultOptions(String [] strs) {
-        options.add("");
+        options.add("<random>");
         if (strs != null)
             for (int i = 0; i < strs.length; i++)
                 options.add(strs[i]);
