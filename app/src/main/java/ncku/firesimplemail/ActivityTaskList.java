@@ -20,6 +20,7 @@ public class ActivityTaskList extends AppCompatActivity {
     TaskHead[] th;
 
     private ArrayList<TaskHead> tasks = new ArrayList<>();
+    private ArrayList<String> taskTitles = new ArrayList<>();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,10 +40,13 @@ public class ActivityTaskList extends AppCompatActivity {
             for(int i=0;i<=th.length-1;i++)
             {
                 tasks.add(th[i]);
+                taskTitles.add(th[i].getTitle());
             }
 
-            ArrayAdapter<TaskHead> adapter = new ArrayAdapter<> (this,
-                    android.R.layout.simple_list_item_1, tasks);
+            //ArrayAdapter<TaskHead> adapter = new ArrayAdapter<> (this,
+                    //android.R.layout.simple_list_item_1, tasks);
+            ArrayAdapter<String> adapter = new ArrayAdapter<> (this,
+                android.R.layout.simple_list_item_1, taskTitles);
             ListView listView = findViewById(R.id.listView);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(newTaskClickedHandler);
@@ -64,7 +68,8 @@ public class ActivityTaskList extends AppCompatActivity {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
 
             Intent myIntent = new Intent(ActivityTaskList.this, ActivityTaskWrite.class);
-            TaskHead selected = (TaskHead) parent.getItemAtPosition(position);
+            //TaskHead selected = (TaskHead) parent.getItemAtPosition(position);
+            TaskHead selected = tasks.get(position);
             myIntent.putExtra("ID",selected.getId());
             myIntent.putExtra("Operation","update");
             ActivityTaskList.this.startActivity(myIntent);
