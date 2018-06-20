@@ -123,11 +123,9 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                         Toast toast = Toast.makeText(ActivityTaskWrite.this,"create failed", Toast.LENGTH_SHORT);
                         toast.show();
                     }
-
                 }
             }
         });
-
     }
 
     public void addDropdownList(View view) {
