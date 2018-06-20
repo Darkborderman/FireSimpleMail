@@ -18,19 +18,22 @@ public class DropdownList {
     private Activity act;
     private DropdownList self = this;
 
-    public DropdownList(Activity activity) {
+    public DropdownList(Activity activity, String [] strs) {
         act = activity;
         spinner = new Spinner(activity);
         options = new ArrayList<>();
-        addDefaultOptions();
+        addDefaultOptions(strs);
         adapter = new ArrayAdapter<> (activity,
             android.R.layout.simple_spinner_dropdown_item, options);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(itemSelectedHandler);
     }
 
-    private void addDefaultOptions() {
+    private void addDefaultOptions(String [] strs) {
         options.add("");
+        if (strs != null)
+            for (int i = 0; i < strs.length; i++)
+                options.add(strs[i]);
         options.add("<Add Item>");
         options.add("<Delete List>");
     }
