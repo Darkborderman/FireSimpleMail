@@ -48,6 +48,12 @@
             android:label="Task Write"
             android:name=".ActivityTaskWrite">
         </activity>
+        
+        <receiver android:name=".Scheduler">
+            <intent-filter>
+                <action android:name="test" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

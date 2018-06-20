@@ -1,7 +1,10 @@
 package ncku.firesimplemail;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +24,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -231,7 +235,57 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                             toast.show();
                         }
                     } else {
+                        taskTitle = taskTitleTextBox.getText().toString();
+                        title = titleTextBox.getText().toString();
+                        to = toTextBox.getText().toString();
+                        body = "";
+                        //Text [] texts = new Text[12];
+
+                        //ArrayList<Text> texts = new ArrayList<>();
+                        ArrayList <String []> texts = new ArrayList<>();
+                        for (int i = 0; i < dropdownlists.size(); i++) {
+                            DropdownList ddt = dropdownlists.get(i);
+                            int index = ddt.spinner.getSelectedItemPosition();
+
+                                List<String> list = ddt.options.subList(1, ddt.options.size() - 2);
+                                String [] strs = list.toArray(new String[list.size()]);
+                                //texts.add(new MultiText(strs));
+                            if (index == 0 || index == -1) {
+                                texts.add(strs);
+                            } else {
+                                texts.add(Arrays.copyOf(strs, 1));
+                            }
+                        }
+
+                        //Text [] textData = texts.toArray(new Text[texts.size()]);
+
+                        int interval = 0;
+                        if (duration) {
+                            String val_str = durationTextBox.getText().toString();
+                            if (!val_str.equals(""))
+                                interval = Integer.valueOf(val_str);
+                        }
+
+                        //Calendar cal = Calendar.getInstance();
+                        // 設定於 3 分鐘後執行
+                        //cal.add(Calendar.MINUTE, 3);
+                        if (!schedule)
+                            calendar = Calendar.getInstance();
+
+                        Intent intent = new Intent(ActivityTaskWrite.this, Scheduler.class);
+                        //intent.putExtra("msg", "play_hskay");
+                        intent.putExtra("title", title);
+                        intent.putExtra("to", to);
+                        intent.putExtra("from", from);
+                        intent.putExtra("interval", interval);
+                        intent.putExtra("body", texts);
+
+                        PendingIntent pi = PendingIntent.getBroadcast(ActivityTaskWrite.this, 1, intent, PendingIntent.FLAG_ONE_SHOT);
+
+                        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
                         // Alarm...
+                        debugLog("Make a alarm...");
                     }
                 } else {
                     // Stop the alarm task
@@ -329,4 +383,8 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
             task=client.getTask(ID);
         }
     };
+
+    private void debugLog(String str) {
+        Toast.makeText(ActivityTaskWrite.this, str, Toast.LENGTH_SHORT).show();
+    }
 }
