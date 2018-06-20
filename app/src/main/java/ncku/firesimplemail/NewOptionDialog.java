@@ -39,6 +39,7 @@ public class NewOptionDialog extends DialogFragment{
                 EditText editText = view.findViewById(R.id.editText);
                 dropdownList.options.add(1, editText.getText().toString());
                 dropdownList.adapter.notifyDataSetChanged();
+                dropdownList.spinner.setSelection(1);
                 listener.onDialogPositiveClick();
             }
         });
