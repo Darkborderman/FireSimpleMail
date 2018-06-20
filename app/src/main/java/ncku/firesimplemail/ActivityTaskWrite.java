@@ -1,15 +1,27 @@
 package ncku.firesimplemail;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import FSMServer.*;
+
+import android.widget.CompoundButton;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +36,10 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
     Button saveButton, addButton;
     LinearLayout linearLayout;
     String operation,ID;
+    Switch scheduleButton, durationButton;
+    EditText dateTextBox, durationTextBox;
+    Calendar calendar = Calendar.getInstance();
+    boolean schedule, duration;
     boolean result;
     private ArrayList<DropdownList> dropdownlists = new ArrayList<>();
     Task task;
@@ -44,6 +60,44 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
         title=titleTextBox.getText().toString();
         from=account+"@mail.FSM.com";
         to=toTextBox.getText().toString();
+
+
+        dateTextBox = findViewById(R.id.dateTextBox);
+        dateTextBox.setInputType(InputType.TYPE_NULL);
+        dateTextBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectTimeAndDate();
+            }
+        });
+        dateTextBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    selectTimeAndDate();
+                }
+            }
+        });
+        durationTextBox = findViewById(R.id.durationTextBox);
+
+
+        durationButton = findViewById(R.id.durationButton);
+        durationButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                durationTextBox.setEnabled(isChecked);
+                duration = isChecked;
+            }
+        });
+
+        scheduleButton = findViewById(R.id.scheduleButton);
+        scheduleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                dateTextBox.setEnabled(isChecked);
+                schedule = isChecked;
+            }
+        });
 
         if(operation.equals("update")){
 
@@ -69,6 +123,19 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                 DropdownList ddt = new DropdownList(ActivityTaskWrite.this, strs);
                 dropdownlists.add(ddt);
                 linearLayout.addView(ddt.spinner);
+            }
+
+            Date d = task.getSendDate();
+            calendar.setTime(d);
+            if (d.after(new Date())) {
+                scheduleButton.setChecked(true);
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd kk:mm");
+                dateTextBox.setHint(formatter.format(d));
+            }
+
+            if (task.getInterval() != 0) {
+                durationButton.setChecked(true);
+                durationTextBox.setText(Integer.toString(task.getInterval()));
             }
 
         } else if(operation.equals("create")){
@@ -100,7 +167,23 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                 from=account+"@mail.FSM.com";
                 to=toTextBox.getText().toString();
 
-                task = new Task(from,to,title, texts.toArray(new Text[texts.size()]),new Date(),1000);
+                Date date;
+                if (schedule) {
+                    date = calendar.getTime();
+                } else {
+                    Calendar c = Calendar.getInstance();
+                    c.add(Calendar.SECOND, 10);
+                    date = c.getTime();
+                }
+
+                int interval = 0;
+                if (duration) {
+                    String val_str = durationTextBox.getText().toString();
+                    if (!val_str.equals(""))
+                        interval = Integer.valueOf(val_str);
+                }
+
+                task = new Task(from,to,title, texts.toArray(new Text[texts.size()]), date, interval);
 
                 Thread thread = new Thread(connect);
                 thread.start();
@@ -122,6 +205,35 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                 }
             }
         });
+
+
+    }
+
+    public void selectTimeAndDate() {
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        new DatePickerDialog(ActivityTaskWrite.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, day);
+                Calendar c = Calendar.getInstance();
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
+                new TimePickerDialog(ActivityTaskWrite.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendar.set(Calendar.MINUTE, minute);
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd kk:mm");
+                        dateTextBox.setHint(formatter.format(calendar.getTime()));
+                    }
+                }, hour, minute, false).show();
+            }
+        }, year, month, day).show();
     }
 
     public void addDropdownList(View view) {
