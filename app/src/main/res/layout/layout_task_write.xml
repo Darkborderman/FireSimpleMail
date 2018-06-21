@@ -40,6 +40,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="save"
+        android:background="@drawable/custom_button"
+        android:fontFamily="sans-serif"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintBaseline_toBaselineOf="@+id/deleteTaskButton"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -49,6 +52,9 @@
         android:layout_height="wrap_content"
         android:onClick="addDropdownList"
         android:text="New Text"
+        android:background="@drawable/custom_button"
+        android:fontFamily="sans-serif"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintBaseline_toBaselineOf="@+id/startButton"
         app:layout_constraintEnd_toEndOf="@+id/saveButton" />
 
@@ -154,6 +160,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="Start"
+        android:background="@drawable/custom_button"
+        android:fontFamily="sans-serif"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintBaseline_toBaselineOf="@+id/toTextBox"
         app:layout_constraintEnd_toStartOf="@+id/button" />
 
@@ -162,6 +171,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="delete"
+        android:background="@drawable/custom_button"
+        android:fontFamily="sans-serif"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintBaseline_toBaselineOf="@+id/titleTextBox"
         app:layout_constraintEnd_toEndOf="@+id/startButton" />
 
