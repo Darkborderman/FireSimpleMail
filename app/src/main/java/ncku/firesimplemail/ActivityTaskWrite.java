@@ -254,7 +254,6 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                             e.printStackTrace();
                         }
 
-
                         if (result) {
                             Toast toast = Toast.makeText(ActivityTaskWrite.this, "successful", Toast.LENGTH_SHORT);
                             toast.show();
