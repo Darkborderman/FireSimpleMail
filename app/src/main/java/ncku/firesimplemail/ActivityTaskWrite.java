@@ -39,7 +39,7 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
     TextView titleTextBox,toTextBox;
 
     String title,from,to;
-    Button saveButton, addButton, startButton;
+    Button saveButton, addButton,deleteTaskButton, startButton;
     LinearLayout linearLayout;
     String operation,ID;
     Switch scheduleButton, durationButton;
@@ -60,6 +60,7 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
         operation=getIntent().getStringExtra("Operation");
         linearLayout = findViewById(R.id.linearLayout);
 
+        deleteTaskButton=findViewById(R.id.deleteTaskButton);
         titleTextBox=findViewById(R.id.titleTextBox);
         toTextBox=findViewById(R.id.toTextBox);
 
@@ -107,9 +108,14 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
         if(operation.equals("update")){
 
             ID=getIntent().getStringExtra("ID");
-            Thread thread = new Thread(fetchTask);
-            thread.start();
 
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    task=client.getTask(ID);
+                }
+            });
+            thread.start();
             try {
                 thread.join();
             } catch (InterruptedException e) {
@@ -197,13 +203,38 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                 }
 
                 if(result) {
-                    Toast toast = Toast.makeText(ActivityTaskWrite.this,operation + " success", Toast.LENGTH_SHORT);
-                    toast.show();
+                    Toast.makeText(ActivityTaskWrite.this,operation + " success", Toast.LENGTH_SHORT).show();
                     Intent myIntent = new Intent(ActivityTaskWrite.this, ActivityFacilityList.class);
                     ActivityTaskWrite.this.startActivity(myIntent);
                 } else {
-                    Toast toast = Toast.makeText(ActivityTaskWrite.this,operation + " failed", Toast.LENGTH_SHORT);
-                    toast.show();
+                    Toast.makeText(ActivityTaskWrite.this,operation + " failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        deleteTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        result=client.deleteTask(ID);
+                    }
+                });
+                thread.start();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if(result)
+                {
+                    Toast.makeText(ActivityTaskWrite.this,"success",Toast.LENGTH_SHORT).show();
+                    Intent myIntent = new Intent(ActivityTaskWrite.this, ActivityFacilityList.class);
+                    ActivityTaskWrite.this.startActivity(myIntent);
+                }
+                else
+                {
+                    Toast.makeText(ActivityTaskWrite.this,"failed",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -379,13 +410,11 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
 
         }
     };
-    private Runnable fetchTask= new Runnable(){
-        public void run(){
-            task=client.getTask(ID);
-        }
-    };
+
+
 
     private void debugLog(String str) {
         Toast.makeText(ActivityTaskWrite.this, str, Toast.LENGTH_SHORT).show();
-    }
+    };
+
 }
