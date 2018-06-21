@@ -14,11 +14,10 @@ import static ncku.firesimplemail.ActivityLogin.client;
 
 public class ActivityMailWrite extends AppCompatActivity{
 
-    Button sendButton;
+    Button sendButton,getTaskButton;
     TextView titleTextBox,toTextBox,contextTextBox;
-    String title,from,to,context;
-    boolean result;
     Date date=new Date(System.currentTimeMillis());
+    boolean result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +25,7 @@ public class ActivityMailWrite extends AppCompatActivity{
         setContentView(R.layout.layout_mail_write);
 
         sendButton=findViewById(R.id.sendButton);
+        getTaskButton=findViewById(R.id.getTaskButton);
         titleTextBox=findViewById(R.id.taskTitleTextBox);
         toTextBox=findViewById(R.id.toTextBox);
         contextTextBox=findViewById(R.id.contextTextBox);
@@ -34,18 +34,25 @@ public class ActivityMailWrite extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
-                from=account+"@mail.FSM.com";
-                to=toTextBox.getText().toString();
-                title=titleTextBox.getText().toString();
-                context=contextTextBox.getText().toString();
+                String from=account+"@mail.FSM.com";
+                String to=toTextBox.getText().toString();
+                String title=titleTextBox.getText().toString();
+                String context=contextTextBox.getText().toString();
+                final Mail mail=new Mail(from,to,title,context,date);
 
-                Thread thread = new Thread(connect);
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        result=client.sendMail(mail);
+                    }
+                });
                 thread.start();
                 try {
                     thread.join();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
                 if(result){
                     Toast toast = Toast.makeText(ActivityMailWrite.this,"Success", Toast.LENGTH_SHORT);
                     toast.show();
@@ -58,12 +65,11 @@ public class ActivityMailWrite extends AppCompatActivity{
                 }
             }
         });
+        getTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Choose which task should be used
+            }
+        });
     }
-
-    private Runnable connect = new Runnable() {
-        public void run() {
-            Mail mail=new Mail(from,to,title,context,date);
-            result=client.sendMail(mail);
-        }
-    };
 }
