@@ -1,5 +1,8 @@
 package ncku.firesimplemail;
 
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,38 +13,53 @@ import static ncku.firesimplemail.ActivityLogin.client;
 
 public class ActivityFacilityList extends AppCompatActivity{
 
-    Button getMailButton,writeMailButton;
-    Button getTaskButton,writeTaskButton;
+    FloatingActionButton writeMailButton,writeTaskButton;
     Button logoutButton;
+    TabControl mainTabControl;
+    ViewPager viewPager;
     boolean result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_facility_list);
+        //setContentView(R.layout.layout_facility_list);
+        setContentView(R.layout.tab_control);
 
-        //get mail button
-        getMailButton=findViewById(R.id.getMailButton);
-        getMailButton.setOnClickListener(new View.OnClickListener() {
+        // tab layout
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mainTabControl = new TabControl(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager.setAdapter(mainTabControl);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+        // get mail button
+        writeMailButton = findViewById(R.id.writeMailButton);
+        writeMailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(ActivityFacilityList.this, ActivityMailList.class);
+                Intent myIntent = new Intent(ActivityFacilityList.this, ActivityMailWrite.class);
                 ActivityFacilityList.this.startActivity(myIntent);
             }
         });
 
 
         //get task button
-        getTaskButton=findViewById(R.id.getTaskButton);
-        getTaskButton.setOnClickListener(new View.OnClickListener() {
+        writeTaskButton=findViewById(R.id.writeTaskButton);
+        writeTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 Intent myIntent = new Intent(ActivityFacilityList.this, ActivityTaskList.class);
-                 ActivityFacilityList.this.startActivity(myIntent);
+                Intent myIntent = new Intent(ActivityFacilityList.this, ActivityTaskWrite.class);
+                myIntent.putExtra("Operation","create");
+                startActivity(myIntent);
             }
         });
 
-
+/*
         //logout button
         logoutButton=findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +83,7 @@ public class ActivityFacilityList extends AppCompatActivity{
 
             }
         });
+        */
     }
     private Runnable connect = new Runnable() {
         public void run() {
