@@ -43,8 +43,6 @@ public class ActivityTaskList extends AppCompatActivity {
                 taskTitles.add(th[i].getTitle());
             }
 
-            //ArrayAdapter<TaskHead> adapter = new ArrayAdapter<> (this,
-                    //android.R.layout.simple_list_item_1, tasks);
             ArrayAdapter<String> adapter = new ArrayAdapter<> (this,
                 android.R.layout.simple_list_item_1, taskTitles);
             ListView listView = findViewById(R.id.listView);
@@ -68,7 +66,6 @@ public class ActivityTaskList extends AppCompatActivity {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
 
             Intent myIntent = new Intent(ActivityTaskList.this, ActivityTaskWrite.class);
-            //TaskHead selected = (TaskHead) parent.getItemAtPosition(position);
             TaskHead selected = tasks.get(position);
             myIntent.putExtra("ID",selected.getId());
             myIntent.putExtra("Operation","update");
