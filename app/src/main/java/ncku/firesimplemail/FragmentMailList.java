@@ -70,10 +70,6 @@ public class FragmentMailList extends Fragment {
                             {
                                 client.deleteMail(mh[i].getId());
                             }
-                            result=true;
-                        }
-                        else{
-                            result=false;
                         }
                     }
                 });
@@ -84,7 +80,7 @@ public class FragmentMailList extends Fragment {
                     e.printStackTrace();
                 }
                 // try to refresh page after delete all
-                Intent myIntent = new Intent(getActivity(), FragmentMailList.class);
+                Intent myIntent = new Intent(getActivity(), ActivityFacilityList.class);
                 startActivity(myIntent);
             }
         });
