@@ -15,6 +15,7 @@ import static ncku.firesimplemail.ActivityLogin.client;
 public class ActivityMailList extends AppCompatActivity{
 
     private ArrayList<MailHead> mails = new ArrayList<>();
+    private ArrayList<String> mailTitles=new ArrayList<>();
     MailHead[] mh;
     Button writeMailButton;
 
@@ -34,10 +35,14 @@ public class ActivityMailList extends AppCompatActivity{
 
         if(mh!=null)
         {
-            for(int i=0;i<=mh.length-1;i++) mails.add(mh[i]);
+            for(int i=0;i<=mh.length-1;i++)
+            {
+                mails.add(mh[i]);
+                mailTitles.add(mh[i].getTitle());
+            }
 
-            ArrayAdapter<MailHead> adapter = new ArrayAdapter<> (this,
-                    android.R.layout.simple_list_item_1, mails);
+            ArrayAdapter<String> adapter = new ArrayAdapter<> (this,
+                    android.R.layout.simple_list_item_1, mailTitles);
             ListView listView = findViewById(R.id.listView2);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(newMailClickedHandler);
@@ -57,7 +62,7 @@ public class ActivityMailList extends AppCompatActivity{
         public void onItemClick(AdapterView parent, View v, int position, long id) {
 
             Intent myIntent = new Intent(ActivityMailList.this, ActivityMailView.class);
-            MailHead selected = (MailHead)parent.getItemAtPosition(position);
+            MailHead selected = mails.get(position);
             myIntent.putExtra("ID", selected.getId());
             ActivityMailList.this.startActivity(myIntent);
         }
