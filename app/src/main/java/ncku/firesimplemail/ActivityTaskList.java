@@ -8,6 +8,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import FSMServer.*;
 import java.util.ArrayList;
 
@@ -18,6 +20,7 @@ public class ActivityTaskList extends AppCompatActivity {
 
     Button writeTaskButton;
     TaskHead[] th;
+    boolean result;
 
     private ArrayList<TaskHead> tasks = new ArrayList<>();
     private ArrayList<String> taskTitles = new ArrayList<>();
@@ -48,6 +51,7 @@ public class ActivityTaskList extends AppCompatActivity {
             ListView listView = findViewById(R.id.listView);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(newTaskClickedHandler);
+            listView.setOnItemLongClickListener(deleteTaskHandler);
         }
         //write task button
         writeTaskButton=findViewById(R.id.writeTaskButton);
@@ -59,7 +63,6 @@ public class ActivityTaskList extends AppCompatActivity {
                 ActivityTaskList.this.startActivity(myIntent);
             }
         });
-
     }
 
     private AdapterView.OnItemClickListener newTaskClickedHandler = new AdapterView.OnItemClickListener() {
@@ -72,6 +75,36 @@ public class ActivityTaskList extends AppCompatActivity {
             ActivityTaskList.this.startActivity(myIntent);
         }
     };
+    private AdapterView.OnItemLongClickListener deleteTaskHandler=new AdapterView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView parent, View view, int position, long id) {
+
+            final TaskHead selected = tasks.get(position);
+            Thread thread=new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    result=client.deleteTask(selected.getId());
+                }
+            });
+            thread.start();
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if(result){
+                Intent myIntent = new Intent(ActivityTaskList.this, ActivityTaskList.class);
+                ActivityTaskList.this.startActivity(myIntent);
+                Toast.makeText(ActivityTaskList.this,"Remove success",Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(ActivityTaskList.this,"Remove failed",Toast.LENGTH_SHORT).show();
+            }
+            return false;
+        }
+    };
+
 
     private Runnable connect = new Runnable() {
         public void run() {
