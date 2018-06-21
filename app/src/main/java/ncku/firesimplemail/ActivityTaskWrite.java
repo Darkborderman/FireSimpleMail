@@ -1,7 +1,10 @@
 package ncku.firesimplemail;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,9 +24,11 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import static ncku.firesimplemail.ActivityLogin.account;
 import static ncku.firesimplemail.ActivityLogin.client;
@@ -32,15 +37,18 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
 
 
     TextView titleTextBox,toTextBox;
+
     String title,from,to;
-    Button saveButton, addButton;
+    Button saveButton, addButton,deleteTaskButton, startButton;
     LinearLayout linearLayout;
     String operation,ID;
     Switch scheduleButton, durationButton;
     EditText dateTextBox, durationTextBox;
     Calendar calendar = Calendar.getInstance();
-    boolean schedule, duration;
+    Random rand = new Random();
+    boolean schedule = false, duration = false;
     boolean result;
+    String body = "";
     private ArrayList<DropdownList> dropdownlists = new ArrayList<>();
     Task task;
 
@@ -52,13 +60,11 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
         operation=getIntent().getStringExtra("Operation");
         linearLayout = findViewById(R.id.linearLayout);
 
+        deleteTaskButton=findViewById(R.id.deleteTaskButton);
         titleTextBox=findViewById(R.id.titleTextBox);
         toTextBox=findViewById(R.id.toTextBox);
 
-        title=titleTextBox.getText().toString();
-        from=account+"@mail.FSM.com";
-        to=toTextBox.getText().toString();
-
+        from = account + "@mail.FSM.com";
 
         dateTextBox = findViewById(R.id.dateTextBox);
         dateTextBox.setInputType(InputType.TYPE_NULL);
@@ -97,19 +103,25 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
             }
         });
 
+
+
         if(operation.equals("update")){
 
             ID=getIntent().getStringExtra("ID");
-            Thread thread = new Thread(fetchTask);
-            thread.start();
 
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    task=client.getTask(ID);
+                }
+            });
+            thread.start();
             try {
                 thread.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            titleTextBox.setEnabled(false);
             titleTextBox.setText(task.getTitle());
             toTextBox.setText(task.getReceiver());
 
@@ -191,18 +203,126 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                 }
 
                 if(result) {
-                    Toast toast = Toast.makeText(ActivityTaskWrite.this,operation + " success", Toast.LENGTH_SHORT);
-                    toast.show();
+                    Toast.makeText(ActivityTaskWrite.this,operation + " success", Toast.LENGTH_SHORT).show();
                     Intent myIntent = new Intent(ActivityTaskWrite.this, ActivityFacilityList.class);
                     ActivityTaskWrite.this.startActivity(myIntent);
                 } else {
-                    Toast toast = Toast.makeText(ActivityTaskWrite.this,operation + " failed", Toast.LENGTH_SHORT);
-                    toast.show();
+                    Toast.makeText(ActivityTaskWrite.this,operation + " failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        deleteTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        result=client.deleteTask(ID);
+                    }
+                });
+                thread.start();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if(result)
+                {
+                    Toast.makeText(ActivityTaskWrite.this,"success",Toast.LENGTH_SHORT).show();
+                    Intent myIntent = new Intent(ActivityTaskWrite.this, ActivityFacilityList.class);
+                    ActivityTaskWrite.this.startActivity(myIntent);
+                }
+                else
+                {
+                    Toast.makeText(ActivityTaskWrite.this,"failed",Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+        startButton = findViewById(R.id.startButton);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (true) { // Run task or stop
+                    if (!schedule && !duration) { // Send mail immediately
 
+                        Thread thread = new Thread(sendMail);
+                        thread.start();
+                        try {
+                            thread.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (result) {
+                            Toast toast = Toast.makeText(ActivityTaskWrite.this, "successful", Toast.LENGTH_SHORT);
+                            toast.show();
+                            //Intent myIntent = new Intent(ActivityTaskWrite.this, ActivityFacilityList.class);
+                            //ActivityTaskWrite.this.startActivity(myIntent);
+                        } else {
+                            Toast toast = Toast.makeText(ActivityTaskWrite.this, " failed", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    } else {
+
+                        title = titleTextBox.getText().toString();
+                        to = toTextBox.getText().toString();
+                        body = "";
+                        //Text [] texts = new Text[12];
+
+                        //ArrayList<Text> texts = new ArrayList<>();
+                        ArrayList <String []> texts = new ArrayList<>();
+                        for (int i = 0; i < dropdownlists.size(); i++) {
+                            DropdownList ddt = dropdownlists.get(i);
+                            int index = ddt.spinner.getSelectedItemPosition();
+
+                                List<String> list = ddt.options.subList(1, ddt.options.size() - 2);
+                                String [] strs = list.toArray(new String[list.size()]);
+                                //texts.add(new MultiText(strs));
+                            if (strs.length > 0) {
+                                if (index == 0 || index == -1) {
+                                    texts.add(strs);
+                                } else {
+                                    texts.add(Arrays.copyOf(strs, 1));
+                                }
+                            }
+                        }
+
+                        //Text [] textData = texts.toArray(new Text[texts.size()]);
+
+                        int interval = 0;
+                        if (duration) {
+                            String val_str = durationTextBox.getText().toString();
+                            if (!val_str.equals(""))
+                                interval = Integer.valueOf(val_str);
+                        }
+
+                        //Calendar cal = Calendar.getInstance();
+                        // 設定於 3 分鐘後執行
+                        //cal.add(Calendar.MINUTE, 3);
+                        if (!schedule)
+                            calendar = Calendar.getInstance();
+
+                        Intent intent = new Intent(ActivityTaskWrite.this, TaskRunner.class);
+                        //intent.putExtra("msg", "play_hskay");
+                        intent.putExtra("title", title);
+                        intent.putExtra("to", to);
+                        intent.putExtra("from", from);
+                        intent.putExtra("interval", interval);
+                        intent.putExtra("texts", texts);
+
+                        PendingIntent pi = PendingIntent.getBroadcast(ActivityTaskWrite.this, 1, intent, PendingIntent.FLAG_ONE_SHOT);
+
+                        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
+                        // Alarm...
+                        debugLog("Make a alarm...");
+                    }
+                } else {
+                    // Stop the alarm task
+                }
+            }
+        });
     }
 
     public void selectTimeAndDate() {
@@ -255,6 +375,29 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
         linearLayout.removeView(list.spinner);
     }
 
+    private Runnable sendMail = new Runnable() {
+        public void run() {
+
+            title = titleTextBox.getText().toString();
+            to = toTextBox.getText().toString();
+            body = "";
+            for (int i = 0; i < dropdownlists.size(); i++) {
+                DropdownList ddt = dropdownlists.get(i);
+                if (ddt.options.size() == 3) // Empty dropdown list
+                    continue;
+
+                int index = ddt.spinner.getSelectedItemPosition();
+                if (index == 0 || index == -1) {// <random> or not selected
+                    index = (rand.nextInt(ddt.options.size() - 3)) + 1;
+                }
+                body += ddt.options.get(index);
+                //Toast.makeText(ActivityTaskWrite.this,body, Toast.LENGTH_SHORT).show();
+            }
+            Mail mail=new Mail(from, to, title, body, new Date());
+            result=client.sendMail(mail);
+        }
+    };
+
     private Runnable connect = new Runnable() {
         public void run() {
             if(operation.equals("update")){
@@ -266,9 +409,11 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
 
         }
     };
-    private Runnable fetchTask= new Runnable(){
-        public void run(){
-            task=client.getTask(ID);
-        }
+
+
+
+    private void debugLog(String str) {
+        Toast.makeText(ActivityTaskWrite.this, str, Toast.LENGTH_SHORT).show();
     };
+
 }

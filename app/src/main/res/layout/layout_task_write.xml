@@ -5,27 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <EditText
         android:id="@+id/titleTextBox"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
+        android:hint="Title"
         android:inputType="textPersonName"
-        android:text="title"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/toTextBox"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
+        android:hint="To"
         android:inputType="textPersonName"
-        android:text="to"
-        app:layout_constraintEnd_toEndOf="@+id/titleTextBox"
+        android:text="To"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/titleTextBox"
         app:layout_constraintTop_toBottomOf="@+id/titleTextBox" />
 
@@ -35,17 +40,16 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="save"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="16dp" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/deleteTaskButton"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:onClick="addDropdownList"
         android:text="New Text"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintBaseline_toBaselineOf="@+id/startButton"
         app:layout_constraintEnd_toEndOf="@+id/saveButton" />
 
     <ScrollView
@@ -55,13 +59,14 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/task_write_text_list_background"
         android:fadeScrollbars="false"
         app:layout_constraintBottom_toTopOf="@+id/barrier"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toTextBox">
+        app:layout_constraintTop_toBottomOf="@+id/startButton">
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -142,5 +147,29 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Start"
+        app:layout_constraintBaseline_toBaselineOf="@+id/toTextBox"
+        app:layout_constraintEnd_toStartOf="@+id/button" />
+
+    <Button
+        android:id="@+id/deleteTaskButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="delete"
+        app:layout_constraintBaseline_toBaselineOf="@+id/titleTextBox"
+        app:layout_constraintEnd_toEndOf="@+id/startButton" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="138dp" />
 
 </android.support.constraint.ConstraintLayout>

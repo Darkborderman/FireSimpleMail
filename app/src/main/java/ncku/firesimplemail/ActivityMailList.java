@@ -14,10 +14,12 @@ import static ncku.firesimplemail.ActivityLogin.client;
 
 public class ActivityMailList extends AppCompatActivity{
 
+
     private ArrayList<MailHead> mails = new ArrayList<>();
     private ArrayList<String> mailTitles=new ArrayList<>();
     MailHead[] mh;
-    Button writeMailButton;
+    boolean result;
+    Button writeMailButton,deleteAllMailButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,6 @@ public class ActivityMailList extends AppCompatActivity{
 
         Thread thread = new Thread(connect);
         thread.start();
-
         try {
             thread.join();
         } catch (InterruptedException e) {
@@ -47,6 +48,40 @@ public class ActivityMailList extends AppCompatActivity{
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(newMailClickedHandler);
         }
+
+        deleteAllMailButton=findViewById(R.id.deleteAllMailButton);
+        deleteAllMailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(mh!=null)
+                        {
+
+                            for(int i=0;i<=mh.length-1;i++)
+                            {
+                                client.deleteMail(mh[i].getId());
+                            }
+                            result=true;
+                        }
+                        else{
+                            result=false;
+                        }
+                    }
+                });
+                thread.start();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                Intent myIntent = new Intent(ActivityMailList.this, ActivityFacilityList.class);
+                ActivityMailList.this.startActivity(myIntent);
+            }
+        });
         //write mail button
         writeMailButton=findViewById(R.id.writeMailButton);
         writeMailButton.setOnClickListener(new View.OnClickListener() {
