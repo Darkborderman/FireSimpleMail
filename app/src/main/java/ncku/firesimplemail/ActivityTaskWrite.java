@@ -116,7 +116,6 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                 e.printStackTrace();
             }
 
-            titleTextBox.setEnabled(false);
             titleTextBox.setText(task.getTitle());
             toTextBox.setText(task.getReceiver());
 
