@@ -49,7 +49,7 @@
             android:name=".ActivityTaskWrite">
         </activity>
         
-        <receiver android:name=".Scheduler">
+        <receiver android:name=".TaskRunner">
             <intent-filter>
                 <action android:name="test" />
             </intent-filter>
