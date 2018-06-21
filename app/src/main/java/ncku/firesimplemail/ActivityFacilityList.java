@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
@@ -14,7 +15,6 @@ import static ncku.firesimplemail.ActivityLogin.client;
 public class ActivityFacilityList extends AppCompatActivity{
 
     FloatingActionButton writeMailButton,writeTaskButton;
-    Button logoutButton;
     TabControl mainTabControl;
     ViewPager viewPager;
     boolean result;
@@ -59,31 +59,6 @@ public class ActivityFacilityList extends AppCompatActivity{
             }
         });
 
-/*
-        //logout button
-        logoutButton=findViewById(R.id.logoutButton);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Thread thread = new Thread(connect);
-                thread.start();
-                try {
-                    thread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if(result){
-                    Intent myIntent = new Intent(ActivityFacilityList.this, ActivityLogin.class);
-                    ActivityFacilityList.this.startActivity(myIntent);
-                }
-                else{
-                    Toast toast = Toast.makeText(ActivityFacilityList.this,"Logout Failed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-
-            }
-        });
-        */
     }
     private Runnable connect = new Runnable() {
         public void run() {

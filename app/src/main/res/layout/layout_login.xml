@@ -65,6 +65,7 @@
         android:background="@drawable/custom_button"
         android:elevation="0dp"
         android:fontFamily="sans-serif"
+        android:foreground="?attr/selectableItemBackground"
         android:text="Register"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -77,6 +78,7 @@
         android:layout_marginTop="400dp"
         android:background="@drawable/custom_button"
         android:fontFamily="sans-serif"
+        android:foreground="?attr/selectableItemBackground"
         android:text="Login"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -22,8 +22,8 @@ public class FragmentMailList extends Fragment {
     private ArrayList<MailHead> mails = new ArrayList<>();
     private ArrayList<String> mailTitles=new ArrayList<>();
     MailHead[] mh;
+    Button logoutButton,deleteAllMailButton;
     boolean result;
-    Button deleteAllMailButton;
 
     @Nullable
     @Override
@@ -88,6 +88,36 @@ public class FragmentMailList extends Fragment {
                 startActivity(myIntent);
             }
         });
+
+        //logout button
+        logoutButton = rootView.findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        result=client.logout();
+                    }
+                });
+                thread.start();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if(result){
+                    Intent myIntent = new Intent(getActivity(), ActivityLogin.class);
+                    startActivity(myIntent);
+                }
+                else{
+                    Toast toast = Toast.makeText(getActivity(),"Logout Failed", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
+            }
+        });
+
 
         return rootView;
     }
