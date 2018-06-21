@@ -324,7 +324,7 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                         am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
                         // Alarm...
-                        debugLog("Make a alarm...");
+                        debugLog("Make an alarm...");
                     }
                 } else {
                     // Stop the alarm task
@@ -368,13 +368,12 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
 
     @Override
     public void onDialogPositiveClick() {
-        //tasks.add(str);
-        //debugLog("Dialog OK");
+
     }
 
     @Override
     public void onDialogNegativeClick() {
-        //debugLog("Dialog Cancel");
+
     }
 
     @Override
@@ -399,7 +398,6 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                     index = (rand.nextInt(ddt.options.size() - 3)) + 1;
                 }
                 body += ddt.options.get(index);
-                //Toast.makeText(ActivityTaskWrite.this,body, Toast.LENGTH_SHORT).show();
             }
             Mail mail=new Mail(from, to, title, body, new Date());
             result=client.sendMail(mail);
