@@ -235,7 +235,7 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                             toast.show();
                         }
                     } else {
-                        taskTitle = taskTitleTextBox.getText().toString();
+
                         title = titleTextBox.getText().toString();
                         to = toTextBox.getText().toString();
                         body = "";
@@ -348,7 +348,7 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
 
     private Runnable sendMail = new Runnable() {
         public void run() {
-            taskTitle = taskTitleTextBox.getText().toString();
+
             title = titleTextBox.getText().toString();
             to = toTextBox.getText().toString();
             body = "";
