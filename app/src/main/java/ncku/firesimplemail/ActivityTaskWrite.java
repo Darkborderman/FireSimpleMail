@@ -250,10 +250,12 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                                 List<String> list = ddt.options.subList(1, ddt.options.size() - 2);
                                 String [] strs = list.toArray(new String[list.size()]);
                                 //texts.add(new MultiText(strs));
-                            if (index == 0 || index == -1) {
-                                texts.add(strs);
-                            } else {
-                                texts.add(Arrays.copyOf(strs, 1));
+                            if (strs.length > 0) {
+                                if (index == 0 || index == -1) {
+                                    texts.add(strs);
+                                } else {
+                                    texts.add(Arrays.copyOf(strs, 1));
+                                }
                             }
                         }
 
@@ -278,7 +280,7 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                         intent.putExtra("to", to);
                         intent.putExtra("from", from);
                         intent.putExtra("interval", interval);
-                        intent.putExtra("body", texts);
+                        intent.putExtra("texts", texts);
 
                         PendingIntent pi = PendingIntent.getBroadcast(ActivityTaskWrite.this, 1, intent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -357,7 +359,7 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
 
                 int index = ddt.spinner.getSelectedItemPosition();
                 if (index == 0 || index == -1) {// <random> or not selected
-                    index = (rand.nextInt() % (ddt.options.size() - 3)) + 1;
+                    index = (rand.nextInt(ddt.options.size() - 3)) + 1;
                 }
                 body += ddt.options.get(index);
                 //Toast.makeText(ActivityTaskWrite.this,body, Toast.LENGTH_SHORT).show();
