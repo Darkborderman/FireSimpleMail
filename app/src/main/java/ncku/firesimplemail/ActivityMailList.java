@@ -82,8 +82,15 @@ public class ActivityMailList extends AppCompatActivity{
                 ActivityMailList.this.startActivity(myIntent);
             }
         });
-
-
+        //write mail button
+        writeMailButton=findViewById(R.id.writeMailButton);
+        writeMailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(ActivityMailList.this, ActivityMailWrite.class);
+                ActivityMailList.this.startActivity(myIntent);
+            }
+        });
     }
 
     private AdapterView.OnItemClickListener newMailClickedHandler = new AdapterView.OnItemClickListener() {
