@@ -310,6 +310,7 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                         intent.putExtra("from", from);
                         intent.putExtra("interval", interval);
                         intent.putExtra("texts", texts);
+                        intent.putExtra("type", "sendMail");
 
                         PendingIntent pi = PendingIntent.getBroadcast(ActivityTaskWrite.this, 1, intent, PendingIntent.FLAG_ONE_SHOT);
 
