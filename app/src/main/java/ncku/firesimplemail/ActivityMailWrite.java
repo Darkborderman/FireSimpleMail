@@ -35,6 +35,8 @@ public class ActivityMailWrite extends AppCompatActivity{
 
                 String from=account+"@mail.FSM.com";
                 String to=toTextBox.getText().toString();
+                if (!to.contains("@mail.FSM.com"))
+                    to += "@mail.FSM.com";
                 String title=titleTextBox.getText().toString();
                 String context=contextTextBox.getText().toString();
                 final Mail mail=new Mail(from,to,title,context,date);

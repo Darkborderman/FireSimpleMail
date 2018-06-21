@@ -123,7 +123,12 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
             }
 
             titleTextBox.setText(task.getTitle());
-            toTextBox.setText(task.getReceiver());
+            String to = task.getReceiver();
+            int idx;
+            if ((idx = to.indexOf("@mail.FSM.com")) > -1) {
+                to = to.substring(0, idx);
+            }
+            toTextBox.setText(to);
 
             Text[] texts = task.getText();
             String[] strs;
@@ -174,6 +179,8 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                 title=titleTextBox.getText().toString();
                 from=account+"@mail.FSM.com";
                 to=toTextBox.getText().toString();
+                if (!to.contains("@mail.FSM.com"))
+                    to += "@mail.FSM.com";
 
                 Date date;
                 if (schedule) {
