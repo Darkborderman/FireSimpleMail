@@ -11,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import FSMServer.*;
 import static ncku.firesimplemail.ActivityLogin.client;
@@ -50,6 +52,7 @@ public class FragmentMailList extends Fragment {
             ListView listView = rootView.findViewById(R.id.listView2);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(newMailClickedHandler);
+            listView.setOnItemLongClickListener(deleteMailHandler);
         }
 
         deleteAllMailButton = rootView.findViewById(R.id.deleteAllMailButton);
@@ -96,6 +99,35 @@ public class FragmentMailList extends Fragment {
             MailHead selected = mails.get(position);
             myIntent.putExtra("ID", selected.getId());
             startActivity(myIntent);
+        }
+    };
+    private AdapterView.OnItemLongClickListener deleteMailHandler=new AdapterView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView parent, View view, int position, long id) {
+
+            final MailHead selected = mails.get(position);
+            Thread thread=new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    result=client.deleteMail(selected.getId());
+                }
+            });
+            thread.start();
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if(result){
+                Intent myIntent = new Intent(getActivity(), ActivityFacilityList.class);
+                startActivity(myIntent);
+                Toast.makeText(getActivity(),"Remove success",Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(getActivity(),"Remove failed",Toast.LENGTH_SHORT).show();
+            }
+            return false;
         }
     };
 
