@@ -30,9 +30,9 @@ import static ncku.firesimplemail.ActivityLogin.client;
 
 public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDialog.Callback, DropdownList.Callback{
 
-    TextView taskTitleTextBox;
+
     TextView titleTextBox,toTextBox;
-    String taskTitle,title,from,to;
+    String title,from,to;
     Button saveButton, addButton;
     LinearLayout linearLayout;
     String operation,ID;
@@ -52,11 +52,9 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
         operation=getIntent().getStringExtra("Operation");
         linearLayout = findViewById(R.id.linearLayout);
 
-        taskTitleTextBox=findViewById(R.id.taskTitleTextBox);
         titleTextBox=findViewById(R.id.titleTextBox);
         toTextBox=findViewById(R.id.toTextBox);
 
-        taskTitle=taskTitleTextBox.getText().toString();
         title=titleTextBox.getText().toString();
         from=account+"@mail.FSM.com";
         to=toTextBox.getText().toString();
@@ -111,8 +109,7 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                 e.printStackTrace();
             }
 
-            taskTitleTextBox.setEnabled(false);
-            taskTitleTextBox.setText(task.getTitle());
+            titleTextBox.setEnabled(false);
             titleTextBox.setText(task.getTitle());
             toTextBox.setText(task.getReceiver());
 
@@ -139,7 +136,7 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
             }
 
         } else if(operation.equals("create")){
-            taskTitleTextBox.setEnabled(true);
+            titleTextBox.setEnabled(true);
         }
 
         addButton = findViewById(R.id.button);
@@ -162,7 +159,6 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                     }
                 }
 
-                taskTitle=taskTitleTextBox.getText().toString();
                 title=titleTextBox.getText().toString();
                 from=account+"@mail.FSM.com";
                 to=toTextBox.getText().toString();
