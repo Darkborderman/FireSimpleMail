@@ -123,7 +123,12 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
             }
 
             titleTextBox.setText(task.getTitle());
-            toTextBox.setText(task.getReceiver());
+            String to = task.getReceiver();
+            int idx;
+            if ((idx = to.indexOf("@mail.FSM.com")) > -1) {
+                to = to.substring(0, idx);
+            }
+            toTextBox.setText(to);
 
             Text[] texts = task.getText();
             String[] strs;
@@ -174,6 +179,8 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                 title=titleTextBox.getText().toString();
                 from=account+"@mail.FSM.com";
                 to=toTextBox.getText().toString();
+                if (!to.contains("@mail.FSM.com"))
+                    to += "@mail.FSM.com";
 
                 Date date;
                 if (schedule) {
@@ -317,7 +324,7 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                         am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
                         // Alarm...
-                        debugLog("Make a alarm...");
+                        debugLog("Make an alarm...");
                     }
                 } else {
                     // Stop the alarm task
@@ -361,13 +368,12 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
 
     @Override
     public void onDialogPositiveClick() {
-        //tasks.add(str);
-        //debugLog("Dialog OK");
+
     }
 
     @Override
     public void onDialogNegativeClick() {
-        //debugLog("Dialog Cancel");
+
     }
 
     @Override
@@ -392,7 +398,6 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                     index = (rand.nextInt(ddt.options.size() - 3)) + 1;
                 }
                 body += ddt.options.get(index);
-                //Toast.makeText(ActivityTaskWrite.this,body, Toast.LENGTH_SHORT).show();
             }
             Mail mail=new Mail(from, to, title, body, new Date());
             result=client.sendMail(mail);
