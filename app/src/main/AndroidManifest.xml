@@ -19,13 +19,8 @@
         </activity>
 
         <activity
-            android:label="Welcome!"
+            android:label="Fire Simple Mail"
             android:name=".ActivityFacilityList">
-        </activity>
-
-        <activity
-            android:label="Mail List"
-            android:name=".ActivityMailList">
         </activity>
 
         <activity
@@ -36,11 +31,6 @@
         <activity
             android:label="Mail Write"
             android:name=".ActivityMailWrite">
-        </activity>
-
-        <activity
-            android:label="Task List"
-            android:name=".ActivityTaskList">
         </activity>
 
         <activity

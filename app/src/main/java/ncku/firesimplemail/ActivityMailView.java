@@ -66,7 +66,7 @@ public class ActivityMailView extends AppCompatActivity{
                 }
 
                 if(result){
-                    Intent myIntent = new Intent(ActivityMailView.this, ActivityMailList.class);
+                    Intent myIntent = new Intent(ActivityMailView.this, ActivityFacilityList.class);
                     ActivityMailView.this.startActivity(myIntent);
                 }
                 else{

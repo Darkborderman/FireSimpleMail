@@ -1,30 +1,35 @@
 package ncku.firesimplemail;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.content.Intent;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import FSMServer.*;
 import static ncku.firesimplemail.ActivityLogin.client;
 
-public class ActivityMailList extends AppCompatActivity{
-
+public class FragmentMailList extends Fragment {
 
     private ArrayList<MailHead> mails = new ArrayList<>();
     private ArrayList<String> mailTitles=new ArrayList<>();
     MailHead[] mh;
     boolean result;
-    Button writeMailButton,deleteAllMailButton;
+    Button deleteAllMailButton;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_mail_list);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View rootView = inflater.inflate(R.layout.layout_mail_list, container, false);
 
         Thread thread = new Thread(connect);
         thread.start();
@@ -42,14 +47,15 @@ public class ActivityMailList extends AppCompatActivity{
                 mailTitles.add(mh[i].getTitle());
             }
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<> (this,
+            ArrayAdapter<String> adapter = new ArrayAdapter<String> (getActivity(),
                     android.R.layout.simple_list_item_1, mailTitles);
-            ListView listView = findViewById(R.id.listView2);
+            ListView listView = rootView.findViewById(R.id.listView2);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(newMailClickedHandler);
+            listView.setOnItemLongClickListener(deleteMailHandler);
         }
 
-        deleteAllMailButton=findViewById(R.id.deleteAllMailButton);
+        deleteAllMailButton = rootView.findViewById(R.id.deleteAllMailButton);
         deleteAllMailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,29 +83,51 @@ public class ActivityMailList extends AppCompatActivity{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                // try to refresh page after delete all
+                Intent myIntent = new Intent(getActivity(), FragmentMailList.class);
+                startActivity(myIntent);
+            }
+        });
 
-                Intent myIntent = new Intent(ActivityMailList.this, ActivityFacilityList.class);
-                ActivityMailList.this.startActivity(myIntent);
-            }
-        });
-        //write mail button
-        writeMailButton=findViewById(R.id.writeMailButton);
-        writeMailButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(ActivityMailList.this, ActivityMailWrite.class);
-                ActivityMailList.this.startActivity(myIntent);
-            }
-        });
+        return rootView;
     }
+
 
     private AdapterView.OnItemClickListener newMailClickedHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
-
-            Intent myIntent = new Intent(ActivityMailList.this, ActivityMailView.class);
+            Intent myIntent = new Intent(getActivity(), ActivityMailView.class);
             MailHead selected = mails.get(position);
             myIntent.putExtra("ID", selected.getId());
-            ActivityMailList.this.startActivity(myIntent);
+            startActivity(myIntent);
+        }
+    };
+    private AdapterView.OnItemLongClickListener deleteMailHandler=new AdapterView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView parent, View view, int position, long id) {
+
+            final MailHead selected = mails.get(position);
+            Thread thread=new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    result=client.deleteMail(selected.getId());
+                }
+            });
+            thread.start();
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if(result){
+                Intent myIntent = new Intent(getActivity(), ActivityFacilityList.class);
+                startActivity(myIntent);
+                Toast.makeText(getActivity(),"Remove success",Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(getActivity(),"Remove failed",Toast.LENGTH_SHORT).show();
+            }
+            return false;
         }
     };
 
@@ -108,6 +136,5 @@ public class ActivityMailList extends AppCompatActivity{
             mh=client.getAllMail();
         }
     };
+
 }
-
-

@@ -14,7 +14,7 @@ import static ncku.firesimplemail.ActivityLogin.client;
 
 public class ActivityMailWrite extends AppCompatActivity{
 
-    Button sendButton,getTaskButton;
+    Button sendButton;
     TextView titleTextBox,toTextBox,contextTextBox;
     Date date=new Date(System.currentTimeMillis());
     boolean result;
@@ -25,7 +25,6 @@ public class ActivityMailWrite extends AppCompatActivity{
         setContentView(R.layout.layout_mail_write);
 
         sendButton=findViewById(R.id.sendButton);
-        getTaskButton=findViewById(R.id.getTaskButton);
         titleTextBox=findViewById(R.id.taskTitleTextBox);
         toTextBox=findViewById(R.id.toTextBox);
         contextTextBox=findViewById(R.id.contextTextBox);
@@ -63,12 +62,6 @@ public class ActivityMailWrite extends AppCompatActivity{
                     Toast toast = Toast.makeText(ActivityMailWrite.this,"Fail", Toast.LENGTH_SHORT);
                     toast.show();
                 }
-            }
-        });
-        getTaskButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Choose which task should be used
             }
         });
     }
