@@ -48,6 +48,12 @@ public class ActivityLogin extends AppCompatActivity {
                 }
 
                 if(result){
+                    Intent serviceIntent = new Intent(ActivityLogin.this, TaskRunner.class);
+                    serviceIntent.putExtra("type", "auth");
+                    serviceIntent.putExtra("account", account);
+                    serviceIntent.putExtra("password", password);
+                    //stopService(serviceIntent);
+                    startService(serviceIntent);
                     Intent myIntent = new Intent(ActivityLogin.this, ActivityFacilityList.class);
                     ActivityLogin.this.startActivity(myIntent);
                 }
@@ -76,9 +82,15 @@ public class ActivityLogin extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                if(result){
-
+                if(result) {
+                    Intent serviceIntent = new Intent(ActivityLogin.this, TaskRunner.class);
+                    serviceIntent.putExtra("type", "auth");
+                    serviceIntent.putExtra("account", account);
+                    serviceIntent.putExtra("password", password);
+                    //stopService(serviceIntent);
+                    startService(serviceIntent);
                     Intent myIntent = new Intent(ActivityLogin.this, ActivityFacilityList.class);
+
                     ActivityLogin.this.startActivity(myIntent);
                 }
                 else{
