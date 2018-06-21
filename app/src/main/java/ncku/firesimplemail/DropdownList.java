@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -41,8 +40,6 @@ public class DropdownList {
     private AdapterView.OnItemSelectedListener itemSelectedHandler = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            Toast.makeText(act, "Select:" + options.get(position), Toast.LENGTH_SHORT).show();
-
             switch(options.size() - position) {
                 case 2:
                     NewOptionDialog dialog = new NewOptionDialog(self);

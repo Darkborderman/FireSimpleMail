@@ -9,7 +9,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class NewOptionDialog extends DialogFragment{
 
@@ -27,7 +26,6 @@ public class NewOptionDialog extends DialogFragment{
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Toast.makeText(getActivity(), "Debug: Dialog Started", Toast.LENGTH_SHORT).show();
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.new_option_prompt, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
