@@ -54,7 +54,7 @@ public class TaskRunner extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent == null)
-            return Service.START_STICKY;
+            return Service.START_REDELIVER_INTENT;
         String type = intent.getStringExtra("type");
         if (type.equals("auth")) {
             account = intent.getStringExtra("account");
