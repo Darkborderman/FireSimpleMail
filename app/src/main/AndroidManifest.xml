@@ -39,11 +39,13 @@
             android:name=".ActivityTaskWrite">
         </activity>
         
-        <receiver android:name=".TaskRunner">
+        <receiver android:name=".TaskReceiver">
             <intent-filter>
-                <action android:name="test" />
+                <action android:name="task.receiver" />
             </intent-filter>
         </receiver>
+
+        <service android:name=".TaskRunner"/>
 
     </application>
 

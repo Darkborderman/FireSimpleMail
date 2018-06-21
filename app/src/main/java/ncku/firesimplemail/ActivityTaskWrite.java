@@ -303,7 +303,7 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
                         if (!schedule)
                             calendar = Calendar.getInstance();
 
-                        Intent intent = new Intent(ActivityTaskWrite.this, TaskRunner.class);
+                        Intent intent = new Intent(ActivityTaskWrite.this, TaskReceiver.class);
                         //intent.putExtra("msg", "play_hskay");
                         intent.putExtra("title", title);
                         intent.putExtra("to", to);
