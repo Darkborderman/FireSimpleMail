@@ -274,6 +274,8 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
 
                         title = titleTextBox.getText().toString();
                         to = toTextBox.getText().toString();
+                        if (!to.contains("@mail.FSM.com"))
+                            to += "@mail.FSM.com";
                         body = "";
                         //Text [] texts = new Text[12];
 
@@ -387,6 +389,8 @@ public class ActivityTaskWrite extends AppCompatActivity implements NewOptionDia
 
             title = titleTextBox.getText().toString();
             to = toTextBox.getText().toString();
+            if (!to.contains("@mail.FSM.com"))
+                to += "@mail.FSM.com";
             body = "";
             for (int i = 0; i < dropdownlists.size(); i++) {
                 DropdownList ddt = dropdownlists.get(i);
